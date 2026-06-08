@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: aeeca9faab3b621449f2404f31091a23
+timeCreated: 1491853229
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 85737
+  packageName: Kung Fu Character Pack
+  packageVersion: 1.0
+  assetPath: Assets/Kung Fu Pack/Assets/Prefabs/Jiantou.prefab
+  uploadId: 173299

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 850d6a2b6ad769d40a2c95bc60a8ef66
+timeCreated: 1489534572
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 85737
+  packageName: Kung Fu Character Pack
+  packageVersion: 1.0
+  assetPath: Assets/Kung Fu Pack/Assets/Materials/XiaoMao.mat
+  uploadId: 173299

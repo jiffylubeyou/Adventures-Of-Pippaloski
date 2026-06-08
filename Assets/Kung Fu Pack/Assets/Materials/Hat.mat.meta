@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 332b6c4ffbbea664392aa43a70164166
+timeCreated: 1489427979
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 85737
+  packageName: Kung Fu Character Pack
+  packageVersion: 1.0
+  assetPath: Assets/Kung Fu Pack/Assets/Materials/Hat.mat
+  uploadId: 173299

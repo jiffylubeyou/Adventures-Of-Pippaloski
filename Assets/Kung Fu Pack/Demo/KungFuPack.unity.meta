@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1522d3d32dc812a4d83d8cf273e638d8
+timeCreated: 1489272657
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 85737
+  packageName: Kung Fu Character Pack
+  packageVersion: 1.0
+  assetPath: Assets/Kung Fu Pack/Demo/KungFuPack.unity
+  uploadId: 173299

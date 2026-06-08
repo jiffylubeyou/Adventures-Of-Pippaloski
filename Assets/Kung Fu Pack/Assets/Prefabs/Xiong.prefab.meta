@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d3c5ddbf23380ff42a05bdab9cb03922
+timeCreated: 1489714098
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 85737
+  packageName: Kung Fu Character Pack
+  packageVersion: 1.0
+  assetPath: Assets/Kung Fu Pack/Assets/Prefabs/Xiong.prefab
+  uploadId: 173299

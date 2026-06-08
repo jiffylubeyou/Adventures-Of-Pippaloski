@@ -967,6 +967,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RaftController
   boardRange: 6
   seatOffset: {x: 0.4, y: -0.25, z: 0}
+  raftCamDistance: 25
+  raftCamHeight: 6
   raftSpeed: 20
   raftTurnSpeed: 90
   waterLevel: 4

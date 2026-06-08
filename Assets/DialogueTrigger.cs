@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -31,6 +32,9 @@ public class DialogueTrigger : MonoBehaviour
     private Transform player;
     private bool inRange;
     private bool talking;
+
+    private readonly HashSet<int> consumedLines = new HashSet<int>();
+    private readonly HashSet<int> unlockedLines  = new HashSet<int>();
 
     private void Start()
     {
@@ -68,11 +72,24 @@ public class DialogueTrigger : MonoBehaviour
     {
         talking = true;
         ui.HidePrompt();
-        ui.OpenDialogue(npcName, greeting, lines, OnOptionChosen);
+        ui.OpenDialogue(npcName, greeting, GetAvailableLines(), OnOptionChosen);
     }
 
     private void OnOptionChosen(DialogueLine chosen)
     {
+        // Consume one-time lines and process locks/unlocks
+        int chosenIndex = System.Array.IndexOf(lines, chosen);
+        if (chosen.oneTimeOnly && chosenIndex >= 0)
+            consumedLines.Add(chosenIndex);
+
+        if (chosen.unlocksLineIndices != null)
+            foreach (var i in chosen.unlocksLineIndices)
+                unlockedLines.Add(i);
+
+        if (chosen.locksLineIndices != null)
+            foreach (var i in chosen.locksLineIndices)
+                consumedLines.Add(i);
+
         if (chosen.closesDialogue)
         {
             ui.ShowResponse(npcName, chosen.npcResponse, EndDialogue);
@@ -85,8 +102,20 @@ public class DialogueTrigger : MonoBehaviour
         else
         {
             ui.ShowResponse(npcName, chosen.npcResponse, () =>
-                ui.OpenDialogue(npcName, "Anything else?", lines, OnOptionChosen));
+                ui.OpenDialogue(npcName, "Anything else?", GetAvailableLines(), OnOptionChosen));
         }
+    }
+
+    private DialogueLine[] GetAvailableLines()
+    {
+        var available = new List<DialogueLine>();
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (consumedLines.Contains(i)) continue;
+            if (lines[i].startsLocked && !unlockedLines.Contains(i)) continue;
+            available.Add(lines[i]);
+        }
+        return available.ToArray();
     }
 
     private void EndDialogue()
@@ -130,6 +159,14 @@ public class DialogueLine
     [TextArea(2, 4)]
     public string npcResponse;
     public bool closesDialogue;
+    // Disappears permanently after being chosen once
+    public bool oneTimeOnly;
+    // Hidden until another line unlocks it via unlocksLineIndices
+    public bool startsLocked;
+    // Indices of root lines to unlock when this option is chosen
+    public int[] unlocksLineIndices;
+    // Indices of root lines to permanently hide when this option is chosen
+    public int[] locksLineIndices;
     // If filled, these options appear after the NPC responds instead of going back to the root menu
     public DialogueLine[] followUpLines;
 }

@@ -4133,6 +4133,134 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[1].npcResponse
+      value: No. First you must complete the quest I have commissioned you
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].npcResponse
+      value: Alright, you must find a powerful and ancient bone that is lost to me
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[3].npcResponse
+      value: See ya around kid
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[4].npcResponse
+      value: See ya around kid
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[1].playerPrompt
+      value: Gimmie yoour boat
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[1].startsLocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].playerPrompt
+      value: I would like to embark on a quest
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[3].playerPrompt
+      value: I have your bone
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[3].startsLocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[4].playerPrompt
+      value: Goodbye
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[1].closesDialogue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].closesDialogue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[3].closesDialogue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[4].closesDialogue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[1].followUpLines.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[1].followUpLines.Array.data[0].npcResponse
+      value: Good... Good... Bring me a white bone that is lost to me
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[1].followUpLines.Array.data[0].oneTimeOnly
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[0].npcResponse
+      value: Good... Good... Bring me a white bone that is lost to me
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[0].oneTimeOnly
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[1].npcResponse
+      value: Your loss
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[0].playerPrompt
+      value: Alright, I'll do it
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[1].playerPrompt
+      value: Take a hike Chief
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[1].followUpLines.Array.data[0].closesDialogue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[0].closesDialogue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[1].closesDialogue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[0].locksLineIndices.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: lines.Array.data[2].followUpLines.Array.data[0].unlocksLineIndices.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: 'lines.Array.data[2].followUpLines.Array.data[0].locksLineIndices.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: 'lines.Array.data[2].followUpLines.Array.data[0].unlocksLineIndices.Array.data[0]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 394960425428249557, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
+      propertyPath: 'lines.Array.data[2].followUpLines.Array.data[0].unlocksLineIndices.Array.data[1]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5782788137308743238, guid: 7c23ad95fb4ad0443aad95c9ec46697c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.39

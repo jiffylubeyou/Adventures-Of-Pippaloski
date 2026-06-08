@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8911870330014006704}
   - component: {fileID: 6483886010080502001}
   m_Layer: 0
-  m_Name: Player Border Collie
+  m_Name: Pippaloski
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

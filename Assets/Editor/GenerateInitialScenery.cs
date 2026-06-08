@@ -10,7 +10,7 @@ public static class GenerateInitialScenery
     private const string ScenePath = "Assets/Scenes/InitialScenery.unity";
     private const string MaterialFolder = "Assets/GeneratedAssets/Materials";
     private const string PrefabFolder = "Assets/GeneratedAssets/Prefabs";
-    private const string PlayerPrefabPath = PrefabFolder + "/PlayerBorderCollie.prefab";
+    private const string PlayerPrefabPath = PrefabFolder + "/Pippaloski.prefab";
     private const string GeneratedVersionKey = "Pippaloski.InitialScenery.GeneratedVersion";
     private const string ImportedDogPrefabPath = "Assets/Simple Blocky Dogs Animated/1.prefabs/lassie_dog_animated.prefab";
     private const string ImportedDogMaterialPath = "Assets/Simple Blocky Dogs Animated/5.materials/world_Color.mat";

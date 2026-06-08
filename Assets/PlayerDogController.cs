@@ -51,6 +51,8 @@ public class PlayerDogController : MonoBehaviour
     private Camera mainCam;
     private Vector3 spawnPoint;
     private Text drownText;
+    private Text boneCollectedText;
+    private GameObject boneIconObj;
 
     // Rolling buffer of grounded positions recorded over the last safePositionMemory seconds.
     // Each entry is (worldPosition, timestamp). We keep only the tail we need.
@@ -69,6 +71,8 @@ public class PlayerDogController : MonoBehaviour
         Cursor.visible = false;
 
         drownText = CreateDrownUI();
+        boneCollectedText = CreateBoneCollectedUI();
+        boneIconObj = CreateBoneIconUI();
     }
 
     private void Update()
@@ -181,6 +185,118 @@ public class PlayerDogController : MonoBehaviour
 
         mainCam.transform.position = Vector3.SmoothDamp(mainCam.transform.position, desiredPos, ref camVelocity, 1f / camSmoothing);
         mainCam.transform.LookAt(pivot);
+    }
+
+    // ---------- bone HUD ----------
+
+    public void ShowBoneCollected()
+    {
+        boneIconObj.SetActive(true);
+        StopCoroutine(nameof(HideBoneCollectedMessage));
+        boneCollectedText.gameObject.SetActive(true);
+        StartCoroutine(nameof(HideBoneCollectedMessage));
+    }
+
+    private IEnumerator HideBoneCollectedMessage()
+    {
+        yield return new WaitForSeconds(2f);
+        boneCollectedText.gameObject.SetActive(false);
+    }
+
+    private static Text CreateBoneCollectedUI()
+    {
+        var canvas = new GameObject("Bone Collected UI Canvas").AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 10;
+        canvas.gameObject.AddComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvas.gameObject.AddComponent<GraphicRaycaster>();
+
+        var textObj = new GameObject("Bone Collected Text");
+        textObj.transform.SetParent(canvas.transform, false);
+
+        var rect = textObj.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.sizeDelta = new Vector2(600f, 120f);
+        rect.anchoredPosition = new Vector2(0f, 80f);
+
+        var text = textObj.AddComponent<Text>();
+        text.text = "bone collected!";
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.fontSize = 32;
+        text.fontStyle = FontStyle.Bold;
+        text.alignment = TextAnchor.MiddleCenter;
+        text.color = new Color(1f, 1f, 1f, 1f);
+
+        var shadow = textObj.AddComponent<Shadow>();
+        shadow.effectColor = new Color(0f, 0f, 0f, 0.7f);
+        shadow.effectDistance = new Vector2(3f, -3f);
+
+        textObj.SetActive(false);
+        return text;
+    }
+
+    private static GameObject CreateBoneIconUI()
+    {
+        var canvas = new GameObject("Bone Icon Canvas").AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 9;
+        canvas.gameObject.AddComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvas.gameObject.AddComponent<GraphicRaycaster>();
+
+        // Root icon container — top-right corner
+        var root = new GameObject("Bone Icon");
+        root.transform.SetParent(canvas.transform, false);
+        var rootRect = root.AddComponent<RectTransform>();
+        rootRect.anchorMin = new Vector2(1f, 1f);
+        rootRect.anchorMax = new Vector2(1f, 1f);
+        rootRect.pivot     = new Vector2(1f, 1f);
+        rootRect.sizeDelta = new Vector2(80f, 80f);
+        rootRect.anchoredPosition = new Vector2(-20f, -20f);
+
+        var boneColor = new Color(0.94f, 0.90f, 0.82f);
+
+        // Shaft (wide rectangle)
+        MakeBoneRect("Shaft", root.transform, boneColor,
+            new Vector2(0f, 0f), new Vector2(54f, 14f));
+
+        // Four knob circles at the ends
+        MakeBoneCircle("KnobTL", root.transform, boneColor, new Vector2(-22f,  9f), 14f);
+        MakeBoneCircle("KnobBL", root.transform, boneColor, new Vector2(-22f, -9f), 14f);
+        MakeBoneCircle("KnobTR", root.transform, boneColor, new Vector2( 22f,  9f), 14f);
+        MakeBoneCircle("KnobBR", root.transform, boneColor, new Vector2( 22f, -9f), 14f);
+
+        root.SetActive(false);
+        return root;
+    }
+
+    private static void MakeBoneRect(string name, Transform parent, Color color,
+        Vector2 anchoredPos, Vector2 size)
+    {
+        var go = new GameObject(name);
+        go.transform.SetParent(parent, false);
+        var r = go.AddComponent<RectTransform>();
+        r.anchorMin = new Vector2(0.5f, 0.5f);
+        r.anchorMax = new Vector2(0.5f, 0.5f);
+        r.sizeDelta = size;
+        r.anchoredPosition = anchoredPos;
+        var img = go.AddComponent<Image>();
+        img.color = color;
+    }
+
+    private static void MakeBoneCircle(string name, Transform parent, Color color,
+        Vector2 anchoredPos, float diameter)
+    {
+        var go = new GameObject(name);
+        go.transform.SetParent(parent, false);
+        var r = go.AddComponent<RectTransform>();
+        r.anchorMin = new Vector2(0.5f, 0.5f);
+        r.anchorMax = new Vector2(0.5f, 0.5f);
+        r.sizeDelta = new Vector2(diameter, diameter);
+        r.anchoredPosition = anchoredPos;
+        var img = go.AddComponent<Image>();
+        img.color = color;
+        img.sprite = Resources.Load<Sprite>("UI/Knob"); // Unity's built-in circle sprite
     }
 
     // ---------- death UI ----------

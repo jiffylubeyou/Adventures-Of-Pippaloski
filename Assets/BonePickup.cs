@@ -42,7 +42,10 @@ public class BonePickup : MonoBehaviour
 
     private void BuildBoneVisual()
     {
-        var mat = new Material(Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard"));
+        // Use the default material from a temporary primitive to guarantee a valid shader
+        var temp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        var mat = new Material(temp.GetComponent<Renderer>().sharedMaterial);
+        Destroy(temp);
         mat.color = new Color(0.94f, 0.90f, 0.82f);
 
         CreatePart("Shaft",  PrimitiveType.Capsule, mat, Vector3.zero,                  new Vector3(0f, 0f, 90f), new Vector3(0.18f, 0.45f, 0.18f));

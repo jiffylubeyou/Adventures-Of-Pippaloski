@@ -18,6 +18,8 @@ public class BonePickup : MonoBehaviour
 
         if (GetComponentInChildren<Renderer>() == null)
             BuildBoneVisual();
+        else
+            FixExistingMaterials();
     }
 
     private void Update()
@@ -38,6 +40,23 @@ public class BonePickup : MonoBehaviour
         if (dog != null) dog.ShowBoneCollected();
 
         Destroy(gameObject);
+    }
+
+    private void FixExistingMaterials()
+    {
+        var temp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        var baseMat = temp.GetComponent<Renderer>().sharedMaterial;
+        Destroy(temp);
+
+        var boneColor = new Color(0.94f, 0.90f, 0.82f);
+        foreach (var r in GetComponentsInChildren<Renderer>())
+        {
+            var mat = new Material(baseMat);
+            mat.color = boneColor;
+            if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", boneColor);
+            if (mat.HasProperty("_Color"))     mat.SetColor("_Color",     boneColor);
+            r.material = mat;
+        }
     }
 
     private void BuildBoneVisual()

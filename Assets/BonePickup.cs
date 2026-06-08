@@ -42,11 +42,14 @@ public class BonePickup : MonoBehaviour
 
     private void BuildBoneVisual()
     {
-        // Use the default material from a temporary primitive to guarantee a valid shader
         var temp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         var mat = new Material(temp.GetComponent<Renderer>().sharedMaterial);
         Destroy(temp);
-        mat.color = new Color(0.94f, 0.90f, 0.82f);
+        // Set color for both URP and Standard shader
+        var boneColor = new Color(0.94f, 0.90f, 0.82f);
+        mat.color = boneColor;
+        if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", boneColor);
+        if (mat.HasProperty("_Color"))     mat.SetColor("_Color",     boneColor);
 
         CreatePart("Shaft",  PrimitiveType.Capsule, mat, Vector3.zero,                  new Vector3(0f, 0f, 90f), new Vector3(0.18f, 0.45f, 0.18f));
         CreatePart("KnobL1", PrimitiveType.Sphere,  mat, new Vector3(-0.52f,  0.12f, 0f), Vector3.zero,           Vector3.one * 0.28f);

@@ -90,6 +90,10 @@ public class DialogueTrigger : MonoBehaviour
             foreach (var i in chosen.locksLineIndices)
                 consumedLines.Add(i);
 
+        if (chosen.clearsFlags != null)
+            foreach (var f in chosen.clearsFlags)
+                GameState.ClearFlag(f);
+
         if (chosen.closesDialogue)
         {
             ui.ShowResponse(npcName, chosen.npcResponse, EndDialogue);
@@ -186,6 +190,8 @@ public class DialogueLine
     public string[] requiredFlags;
     // If any listed GameState flags are set, this line is hidden
     public string[] forbiddenFlags;
+    // These GameState flags are cleared when this line is chosen
+    public string[] clearsFlags;
     // If filled, these options appear after the NPC responds instead of going back to the root menu
     public DialogueLine[] followUpLines;
 }

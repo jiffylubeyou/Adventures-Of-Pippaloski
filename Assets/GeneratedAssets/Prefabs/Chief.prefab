@@ -477,6 +477,7 @@ MonoBehaviour:
     locksLineIndices: 
     requiredFlags: []
     forbiddenFlags: []
+    clearsFlags: []
     followUpLines: []
   - playerPrompt: Gimmie yoour boat
     npcResponse: No. First you must complete the quest I have commissioned you
@@ -487,6 +488,7 @@ MonoBehaviour:
     locksLineIndices: 
     requiredFlags: []
     forbiddenFlags: []
+    clearsFlags: []
     followUpLines: []
   - playerPrompt: I would like to embark on a quest
     npcResponse: Alright, you must find a powerful and ancient bone that is lost
@@ -498,16 +500,18 @@ MonoBehaviour:
     locksLineIndices: 
     requiredFlags: []
     forbiddenFlags: []
+    clearsFlags: []
     followUpLines:
     - playerPrompt: Alright, I'll do it
       npcResponse: Good... Good... Bring me a white bone that is lost to me
       closesDialogue: 1
       oneTimeOnly: 1
       startsLocked: 0
-      unlocksLineIndices: 0100000003000000
+      unlocksLineIndices: 010000000300000004000000
       locksLineIndices: 0000000002000000
       requiredFlags: []
       forbiddenFlags: []
+      clearsFlags: []
       followUpLines: []
     - playerPrompt: Take a hike Chief
       npcResponse: Your loss
@@ -518,6 +522,7 @@ MonoBehaviour:
       locksLineIndices: 
       requiredFlags: []
       forbiddenFlags: []
+      clearsFlags: []
       followUpLines: []
   - playerPrompt: I have your bone
     npcResponse: No you don't you little liar
@@ -528,19 +533,33 @@ MonoBehaviour:
     locksLineIndices: 
     requiredFlags: []
     forbiddenFlags:
-    - 0
+    - has_bone
+    clearsFlags: []
     followUpLines: []
   - playerPrompt: I have your bone
     npcResponse: You have found it, I am bound by my word. My boat is yours. It should
       be docked outside for you
     closesDialogue: 1
     oneTimeOnly: 1
-    startsLocked: 0
-    unlocksLineIndices: 
-    locksLineIndices: 05000000
+    startsLocked: 1
+    unlocksLineIndices: 05000000
+    locksLineIndices: 030000000200000001000000
     requiredFlags:
-    - 0
+    - has_bone
     forbiddenFlags: []
+    clearsFlags:
+    - has_bone
+    followUpLines: []
+  - playerPrompt: Gimmie your boat
+    npcResponse: Bro you already have it, it's around here somewhere
+    closesDialogue: 1
+    oneTimeOnly: 0
+    startsLocked: 1
+    unlocksLineIndices: 
+    locksLineIndices: 
+    requiredFlags: []
+    forbiddenFlags: []
+    clearsFlags: []
     followUpLines: []
   - playerPrompt: Goodbye
     npcResponse: See ya around kid
@@ -551,6 +570,7 @@ MonoBehaviour:
     locksLineIndices: 
     requiredFlags: []
     forbiddenFlags: []
+    clearsFlags: []
     followUpLines: []
 --- !u!1 &6583495735208077026
 GameObject:

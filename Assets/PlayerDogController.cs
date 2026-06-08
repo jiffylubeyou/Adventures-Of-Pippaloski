@@ -83,6 +83,9 @@ public class PlayerDogController : MonoBehaviour
             return;
         }
 
+        // Keep bone icon in sync with the has_bone flag
+        boneIconObj.SetActive(GameState.HasFlag(GameState.HasBone));
+
         bool grounded = controller.isGrounded;
 
         if (grounded)
@@ -191,7 +194,6 @@ public class PlayerDogController : MonoBehaviour
 
     public void ShowBoneCollected()
     {
-        boneIconObj.SetActive(true);
         StopCoroutine(nameof(HideBoneCollectedMessage));
         boneCollectedText.gameObject.SetActive(true);
         StartCoroutine(nameof(HideBoneCollectedMessage));

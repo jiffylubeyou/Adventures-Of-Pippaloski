@@ -80,9 +80,13 @@ public class PlayerDogController : MonoBehaviour
         boneIconObj = CreateBoneIconUI();
     }
 
+    // Set by RaftController while Pippaloski is aboard
+    [HideInInspector] public bool MotorEnabled   = true;
+    [HideInInspector] public bool SuppressDrown  = false;
+
     private void Update()
     {
-        if (transform.position.y < drownY)
+        if (!SuppressDrown && transform.position.y < drownY)
         {
             Respawn();
             return;
@@ -105,6 +109,8 @@ public class PlayerDogController : MonoBehaviour
         }
 
         RotateCamera();
+
+        if (!MotorEnabled) return;
 
         var rawInput = GetMovementInput();
 

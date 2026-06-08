@@ -913,6 +913,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 369566197773593865}
+  - component: {fileID: 7043691097078341387}
   m_Layer: 0
   m_Name: Low Poly Raft
   m_TagString: Untagged
@@ -952,6 +953,23 @@ Transform:
   - {fileID: 6177523998375300136}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7043691097078341387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4496900895665180722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0cc118f9a8c6ea4fa33d6b58e7ed23c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RaftController
+  boardRange: 6
+  seatOffset: {x: 0.4, y: -0.25, z: 0}
+  raftSpeed: 20
+  raftTurnSpeed: 90
+  waterLevel: 4
 --- !u!1 &5022218137656448989
 GameObject:
   m_ObjectHideFlags: 0

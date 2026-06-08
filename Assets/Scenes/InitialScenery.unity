@@ -3583,24 +3583,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 369566197773593865, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5.6981225
-      objectReference: {fileID: 0}
-    - target: {fileID: 369566197773593865, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 5.6981225
-      objectReference: {fileID: 0}
-    - target: {fileID: 369566197773593865, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 5.6981225
-      objectReference: {fileID: 0}
-    - target: {fileID: 369566197773593865, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 221.78
       objectReference: {fileID: 0}
     - target: {fileID: 369566197773593865, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.74
+      value: 3.35
       objectReference: {fileID: 0}
     - target: {fileID: 369566197773593865, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4268,7 +4256,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4662327015317222817, guid: e59d9fb3bc4d9104c801e19162613f1a, type: 3}
       propertyPath: m_Name
-      value: Player Border Collie
+      value: Pippaloski
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662327015317222817, guid: e59d9fb3bc4d9104c801e19162613f1a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

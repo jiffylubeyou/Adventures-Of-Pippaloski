@@ -15,6 +15,7 @@ public class PlayerDogController : MonoBehaviour
     [SerializeField] private float turnSpeed = 12f;
     [SerializeField] private float gravity = -18f;
     [SerializeField] private float jumpForce = 14f;
+    [SerializeField] private float doubleJumpForce = 18f;
 
     [Header("Camera")]
     [SerializeField] private Transform cameraTarget;   // assign the camera rig pivot here
@@ -53,6 +54,7 @@ public class PlayerDogController : MonoBehaviour
     private Text drownText;
     private Text boneCollectedText;
     private GameObject boneIconObj;
+    private Transform visualModel;
 
     // Rolling buffer of grounded positions recorded over the last safePositionMemory seconds.
     // Each entry is (worldPosition, timestamp). We keep only the tail we need.
@@ -69,6 +71,9 @@ public class PlayerDogController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (transform.childCount > 0)
+            visualModel = transform.GetChild(0);
 
         drownText = CreateDrownUI();
         boneCollectedText = CreateBoneCollectedUI();
@@ -149,9 +154,10 @@ public class PlayerDogController : MonoBehaviour
             }
             else if (hasDoubleJump && !usedDoubleJump)
             {
-                verticalVelocity = jumpForce;
+                verticalVelocity = doubleJumpForce;
                 usedDoubleJump = true;
                 isGliding = false;
+                StartCoroutine(FrontFlip());
             }
         }
 
@@ -188,6 +194,27 @@ public class PlayerDogController : MonoBehaviour
 
         mainCam.transform.position = Vector3.SmoothDamp(mainCam.transform.position, desiredPos, ref camVelocity, 1f / camSmoothing);
         mainCam.transform.LookAt(pivot);
+    }
+
+    // ---------- front flip ----------
+
+    private IEnumerator FrontFlip()
+    {
+        if (visualModel == null) yield break;
+
+        float duration = 0.45f;
+        float elapsed  = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            visualModel.Rotate((360f / duration) * Time.deltaTime, 0f, 0f, Space.Self);
+            yield return null;
+        }
+
+        // Snap clean so no leftover rotation drift
+        var e = visualModel.localEulerAngles;
+        visualModel.localEulerAngles = new Vector3(0f, e.y, e.z);
     }
 
     // ---------- bone HUD ----------

@@ -95,6 +95,13 @@ public class DialogueTrigger : MonoBehaviour
             foreach (var f in chosen.clearsFlags)
                 GameState.ClearFlag(f);
 
+        if (chosen.setsFlags != null)
+            foreach (var f in chosen.setsFlags)
+                GameState.SetFlag(f);
+
+        if (chosen.grantsBoatAccess)
+            GameState.SetFlag(GameState.QuestComplete);
+
         if (chosen.closesDialogue)
         {
             ui.ShowResponse(npcName, chosen.npcResponse, EndDialogue);
@@ -193,6 +200,10 @@ public class DialogueLine
     public string[] forbiddenFlags;
     // These GameState flags are cleared when this line is chosen
     public string[] clearsFlags;
+    // These GameState flags are set when this line is chosen
+    public string[] setsFlags;
+    // Tick this on Chief's boat-grant line to unlock the raft
+    public bool grantsBoatAccess;
     // If filled, these options appear after the NPC responds instead of going back to the root menu
     public DialogueLine[] followUpLines;
 }

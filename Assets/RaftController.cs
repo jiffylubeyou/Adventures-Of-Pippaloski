@@ -26,6 +26,7 @@ public class RaftController : MonoBehaviour
 
     // Prompt UI
     private Text promptText;
+    private Text noKeysText;
 
     private void Start()
     {
@@ -38,6 +39,7 @@ public class RaftController : MonoBehaviour
         }
 
         promptText = CreatePromptUI();
+        noKeysText = CreateNoKeysUI();
     }
 
     private void Update()
@@ -52,7 +54,12 @@ public class RaftController : MonoBehaviour
             promptText.gameObject.SetActive(inRange);
 
             if (inRange && GetInteractPressed())
-                Board();
+            {
+                if (GameState.HasFlag(GameState.QuestComplete))
+                    Board();
+                else
+                    StartCoroutine(ShowNoKeysMessage());
+            }
         }
         else
         {
@@ -149,6 +156,15 @@ public class RaftController : MonoBehaviour
 #endif
     }
 
+    // ---------- no-keys flash ----------
+
+    private IEnumerator ShowNoKeysMessage()
+    {
+        noKeysText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2.5f);
+        noKeysText.gameObject.SetActive(false);
+    }
+
     // ---------- UI ----------
 
     private static Text CreatePromptUI()
@@ -176,6 +192,41 @@ public class RaftController : MonoBehaviour
         text.fontStyle = FontStyle.Bold;
         text.alignment = TextAnchor.MiddleCenter;
         text.color     = Color.white;
+
+        var shadow = textObj.AddComponent<Shadow>();
+        shadow.effectColor    = new Color(0f, 0f, 0f, 0.8f);
+        shadow.effectDistance = new Vector2(2f, -2f);
+
+        textObj.SetActive(false);
+        return text;
+    }
+
+    private static Text CreateNoKeysUI()
+    {
+        var canvas = new GameObject("Raft No Keys Canvas").AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 11;
+        canvas.gameObject.AddComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvas.gameObject.AddComponent<GraphicRaycaster>();
+
+        var textObj = new GameObject("No Keys Text");
+        textObj.transform.SetParent(canvas.transform, false);
+
+        var rect = textObj.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0f);
+        rect.anchorMax = new Vector2(0.5f, 0f);
+        rect.pivot     = new Vector2(0.5f, 0f);
+        rect.sizeDelta = new Vector2(500f, 80f);
+        // Sits above the "Press E" prompt (prompt is at y=60, this is at y=150)
+        rect.anchoredPosition = new Vector2(0f, 150f);
+
+        var text = textObj.AddComponent<Text>();
+        text.text      = "You don't have the keys!";
+        text.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.fontSize  = 28;
+        text.fontStyle = FontStyle.Bold;
+        text.alignment = TextAnchor.MiddleCenter;
+        text.color     = new Color(1f, 0.35f, 0.2f);
 
         var shadow = textObj.AddComponent<Shadow>();
         shadow.effectColor    = new Color(0f, 0f, 0f, 0.8f);

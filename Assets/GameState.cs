@@ -8,5 +8,6 @@ public static class GameState
     public static void ClearFlag(string flag) => flags.Remove(flag);
     public static bool HasFlag(string flag) => flags.Contains(flag);
 
-    public const string HasBone = "has_bone";
+    public const string HasBone       = "has_bone";
+    public const string QuestComplete = "quest_complete";
 }

@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 namespace SunTemple{
 
@@ -38,18 +41,28 @@ namespace SunTemple{
 
 
 		void FixedUpdate(){
+#if ENABLE_INPUT_SYSTEM
+			var kb = Keyboard.current;
+			var mouse = Mouse.current;
+			moveFB = (kb != null ? ((kb.dKey.isPressed ? 1f : 0f) - (kb.aKey.isPressed ? 1f : 0f)) : 0f) * speed;
+			moveLR = (kb != null ? ((kb.wKey.isPressed ? 1f : 0f) - (kb.sKey.isPressed ? 1f : 0f)) : 0f) * speed;
+			rotHorizontal = (mouse != null ? mouse.delta.ReadValue().x : 0f) * sensitivity;
+			rotVertical   = (mouse != null ? mouse.delta.ReadValue().y : 0f) * sensitivity;
+#else
 			moveFB = Input.GetAxis ("Horizontal") * speed;
 			moveLR = Input.GetAxis ("Vertical") * speed;
-
 			rotHorizontal = Input.GetAxisRaw ("Mouse X") * sensitivity;
 			rotVertical = Input.GetAxisRaw ("Mouse Y") * sensitivity;
-
+#endif
 
 			Vector3 movement = new Vector3 (moveFB, gravity, moveLR);
 
-
 			if (webGLRightClickRotation) {
+#if ENABLE_INPUT_SYSTEM
+				if (Mouse.current != null && Mouse.current.leftButton.isPressed) {
+#else
 				if (Input.GetKey (KeyCode.Mouse0)) {
+#endif
 					CameraRotation (cam, rotHorizontal, rotVertical);
 				}
 			} else if (!webGLRightClickRotation) {

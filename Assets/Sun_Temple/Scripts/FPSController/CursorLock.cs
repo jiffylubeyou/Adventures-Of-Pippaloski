@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 
 namespace Sun_Temple{
@@ -18,7 +21,11 @@ namespace Sun_Temple{
 
 		void Update(){
 			
+#if ENABLE_INPUT_SYSTEM
+			if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) {
+#else
 			if (Input.GetKeyDown (KeyCode.Escape)) {
+#endif
 				if (isLocked) {
 					isLocked = false;
 				} else if (!isLocked) {

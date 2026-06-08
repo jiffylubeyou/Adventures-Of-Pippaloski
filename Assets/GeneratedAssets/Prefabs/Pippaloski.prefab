@@ -74,8 +74,9 @@ MonoBehaviour:
   moveSpeed: 20
   sprintSpeed: 40
   turnSpeed: 12
-  gravity: -18
-  jumpForce: 14
+  gravity: -50
+  jumpForce: 25
+  doubleJumpForce: 35
   cameraTarget: {fileID: 0}
   camDistance: 14
   camHeight: 2
@@ -88,6 +89,10 @@ MonoBehaviour:
   hasFly: 0
   glideGravity: -2
   flySpeed: 7
+  MotorEnabled: 1
+  SuppressDrown: 0
+  CamDistanceOverride: 0
+  CamHeightOverride: 0
 --- !u!1001 &3717483592995005008
 PrefabInstance:
   m_ObjectHideFlags: 0

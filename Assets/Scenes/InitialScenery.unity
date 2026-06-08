@@ -3550,6 +3550,7 @@ GameObject:
   - component: {fileID: 1660637240}
   - component: {fileID: 1660637239}
   - component: {fileID: 1660637238}
+  - component: {fileID: 1660637241}
   m_Layer: 0
   m_Name: Surrounding Water
   m_TagString: Untagged
@@ -3582,7 +3583,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5cd01dab1b2bcb94cac2ccdb3f6342d0, type: 2}
+  - {fileID: 2100000, guid: 31fffcbad51e7e24ca2f652924994bb1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3629,6 +3630,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1660637241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660637237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f612bbadaf3739540a223732e982a0a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterAnimator
+  waveHeight: 0.35
+  waveFrequency: 0.5
+  waveSpeed: 0.7
+  wave2Height: 0.2
+  wave2Frequency: 0.45
+  wave2Speed: 0.5
+  waterDeep: {r: 0.03, g: 0.3, b: 0.55, a: 1}
+  waterShallow: {r: 0.08, g: 0.52, b: 0.78, a: 1}
+  shimmerSpeed: 0.35
+  gridResolution: 80
 --- !u!1 &1740473162
 GameObject:
   m_ObjectHideFlags: 0

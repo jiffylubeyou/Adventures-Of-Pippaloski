@@ -7,6 +7,8 @@ public class RaftController : MonoBehaviour
     [Header("Boarding")]
     [SerializeField] private float boardRange = 3f;
     [SerializeField] private Vector3 seatOffset = new Vector3(0f, 1.2f, 0f);
+    [SerializeField] private float raftCamDistance = 22f;
+    [SerializeField] private float raftCamHeight   = 6f;
 
     [Header("Raft Movement")]
     [SerializeField] private float raftSpeed     = 5f;
@@ -86,8 +88,10 @@ public class RaftController : MonoBehaviour
     {
         playerAboard = true;
 
-        playerController.MotorEnabled  = false;
-        playerController.SuppressDrown = true;
+        playerController.MotorEnabled       = false;
+        playerController.SuppressDrown      = true;
+        playerController.CamDistanceOverride = raftCamDistance;
+        playerController.CamHeightOverride   = raftCamHeight;
 
         // Disable CharacterController so it doesn't fight the parenting
         playerCharacterController.enabled = false;
@@ -108,8 +112,10 @@ public class RaftController : MonoBehaviour
 
         playerCharacterController.enabled = true;
 
-        playerController.MotorEnabled  = true;
-        playerController.SuppressDrown = false;
+        playerController.MotorEnabled       = true;
+        playerController.SuppressDrown      = false;
+        playerController.CamDistanceOverride = 0f;
+        playerController.CamHeightOverride   = 0f;
     }
 
     // ---------- input ----------

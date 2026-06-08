@@ -84,6 +84,10 @@ public class PlayerDogController : MonoBehaviour
     [HideInInspector] public bool MotorEnabled   = true;
     [HideInInspector] public bool SuppressDrown  = false;
 
+    // Overrides set by RaftController (0 = use inspector defaults)
+    [HideInInspector] public float CamDistanceOverride = 0f;
+    [HideInInspector] public float CamHeightOverride   = 0f;
+
     private void Update()
     {
         if (!SuppressDrown && transform.position.y < drownY)
@@ -187,13 +191,15 @@ public class PlayerDogController : MonoBehaviour
 
     private void PositionCamera()
     {
-        var pivot = transform.position + Vector3.up * camHeight;
+        float activeHeight = CamHeightOverride > 0f ? CamHeightOverride : camHeight;
+        var pivot = transform.position + Vector3.up * activeHeight;
         var rot   = Quaternion.Euler(camPitch, camYaw, 0f);
-        var desiredPos = pivot - rot * Vector3.forward * camDistance;
+        float activeCamDist = CamDistanceOverride > 0f ? CamDistanceOverride : camDistance;
+        var desiredPos = pivot - rot * Vector3.forward * activeCamDist;
 
         // Simple obstacle pull-in: spherecast back to avoid clipping
         if (Physics.SphereCast(pivot, 0.2f, desiredPos - pivot, out var hit,
-                camDistance, ~LayerMask.GetMask("Player"), QueryTriggerInteraction.Ignore))
+                activeCamDist, ~LayerMask.GetMask("Player"), QueryTriggerInteraction.Ignore))
         {
             desiredPos = pivot + (desiredPos - pivot).normalized * (hit.distance - 0.1f);
         }

@@ -968,8 +968,8 @@ MonoBehaviour:
   boardRange: 6
   seatOffset: {x: 0.4, y: -0.25, z: 0}
   raftCamDistance: 25
-  raftCamHeight: 6
-  raftSpeed: 20
+  raftCamHeight: 10
+  raftSpeed: 50
   raftTurnSpeed: 90
   waterLevel: 4
 --- !u!1 &5022218137656448989

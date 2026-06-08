@@ -475,6 +475,8 @@ MonoBehaviour:
     startsLocked: 0
     unlocksLineIndices: 
     locksLineIndices: 
+    requiredFlags: []
+    forbiddenFlags: []
     followUpLines: []
   - playerPrompt: Gimmie yoour boat
     npcResponse: No. First you must complete the quest I have commissioned you
@@ -483,6 +485,8 @@ MonoBehaviour:
     startsLocked: 1
     unlocksLineIndices: 
     locksLineIndices: 
+    requiredFlags: []
+    forbiddenFlags: []
     followUpLines: []
   - playerPrompt: I would like to embark on a quest
     npcResponse: Alright, you must find a powerful and ancient bone that is lost
@@ -492,6 +496,8 @@ MonoBehaviour:
     startsLocked: 0
     unlocksLineIndices: 
     locksLineIndices: 
+    requiredFlags: []
+    forbiddenFlags: []
     followUpLines:
     - playerPrompt: Alright, I'll do it
       npcResponse: Good... Good... Bring me a white bone that is lost to me
@@ -500,6 +506,8 @@ MonoBehaviour:
       startsLocked: 0
       unlocksLineIndices: 0100000003000000
       locksLineIndices: 0000000002000000
+      requiredFlags: []
+      forbiddenFlags: []
       followUpLines: []
     - playerPrompt: Take a hike Chief
       npcResponse: Your loss
@@ -508,14 +516,31 @@ MonoBehaviour:
       startsLocked: 0
       unlocksLineIndices: 
       locksLineIndices: 
+      requiredFlags: []
+      forbiddenFlags: []
       followUpLines: []
   - playerPrompt: I have your bone
-    npcResponse: See ya around kid
+    npcResponse: No you don't you little liar
     closesDialogue: 1
     oneTimeOnly: 0
     startsLocked: 1
     unlocksLineIndices: 
     locksLineIndices: 
+    requiredFlags: []
+    forbiddenFlags:
+    - 0
+    followUpLines: []
+  - playerPrompt: I have your bone
+    npcResponse: You have found it, I am bound by my word. My boat is yours. It should
+      be docked outside for you
+    closesDialogue: 1
+    oneTimeOnly: 1
+    startsLocked: 0
+    unlocksLineIndices: 
+    locksLineIndices: 05000000
+    requiredFlags:
+    - 0
+    forbiddenFlags: []
     followUpLines: []
   - playerPrompt: Goodbye
     npcResponse: See ya around kid
@@ -524,6 +549,8 @@ MonoBehaviour:
     startsLocked: 0
     unlocksLineIndices: 
     locksLineIndices: 
+    requiredFlags: []
+    forbiddenFlags: []
     followUpLines: []
 --- !u!1 &6583495735208077026
 GameObject:

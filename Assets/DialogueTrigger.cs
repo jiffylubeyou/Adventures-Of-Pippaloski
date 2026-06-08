@@ -111,9 +111,24 @@ public class DialogueTrigger : MonoBehaviour
         var available = new List<DialogueLine>();
         for (int i = 0; i < lines.Length; i++)
         {
+            var line = lines[i];
             if (consumedLines.Contains(i)) continue;
-            if (lines[i].startsLocked && !unlockedLines.Contains(i)) continue;
-            available.Add(lines[i]);
+            if (line.startsLocked && !unlockedLines.Contains(i)) continue;
+            if (line.requiredFlags != null)
+            {
+                bool pass = true;
+                foreach (var f in line.requiredFlags)
+                    if (!GameState.HasFlag(f)) { pass = false; break; }
+                if (!pass) continue;
+            }
+            if (line.forbiddenFlags != null)
+            {
+                bool blocked = false;
+                foreach (var f in line.forbiddenFlags)
+                    if (GameState.HasFlag(f)) { blocked = true; break; }
+                if (blocked) continue;
+            }
+            available.Add(line);
         }
         return available.ToArray();
     }
@@ -167,6 +182,10 @@ public class DialogueLine
     public int[] unlocksLineIndices;
     // Indices of root lines to permanently hide when this option is chosen
     public int[] locksLineIndices;
+    // All listed GameState flags must be set for this line to show
+    public string[] requiredFlags;
+    // If any listed GameState flags are set, this line is hidden
+    public string[] forbiddenFlags;
     // If filled, these options appear after the NPC responds instead of going back to the root menu
     public DialogueLine[] followUpLines;
 }

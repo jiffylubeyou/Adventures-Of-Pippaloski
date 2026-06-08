@@ -19,17 +19,8 @@ public static class GenerateInitialScenery
     private const string CastleMaterialPath = "Assets/Modular Castle/Assets/Materials/castle.mat";
     private const string CastleTexturePath = "Assets/Modular Castle/Assets/textures/castle.png";
 
-    [InitializeOnLoadMethod]
-    private static void CreateSceneOnFirstImport()
-    {
-        EditorApplication.delayCall += () =>
-        {
-            if (!File.Exists(ScenePath) || EditorPrefs.GetInt(GeneratedVersionKey, 0) < SceneVersion)
-            {
-                CreateScene(false);
-            }
-        };
-    }
+    // Auto-generation disabled — scene is now hand-crafted.
+    // Use Tools/Pippaloski/Generate Initial Scenery only to rebuild from scratch intentionally.
 
     [MenuItem("Tools/Pippaloski/Generate Initial Scenery")]
     public static void CreateScene()

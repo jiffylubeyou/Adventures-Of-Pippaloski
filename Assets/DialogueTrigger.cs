@@ -40,6 +40,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         ui = DialogueUI.GetOrCreate();
         var playerObj = GameObject.FindGameObjectWithTag("Player")
+                     ?? GameObject.Find("Pippaloski")
                      ?? GameObject.Find("Player Border Collie");
         if (playerObj != null)
             player = playerObj.transform;

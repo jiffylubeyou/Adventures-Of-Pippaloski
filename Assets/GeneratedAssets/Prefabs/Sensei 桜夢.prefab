@@ -879,6 +879,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SenseiShop
   items:
+  - itemName: Sprint
+    description: Go faster when you hold down shift
+    price: 20
+    grantsFlag: has_sprint
+    oneTimePurchase: 1
+    purchased: 0
   - itemName: Double Jump
     description: It is what it sounds like
     price: 100

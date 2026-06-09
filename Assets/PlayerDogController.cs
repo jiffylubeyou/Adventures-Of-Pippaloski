@@ -30,6 +30,7 @@ public class PlayerDogController : MonoBehaviour
 
     // Powerup flags — enable these when the player earns the ability
     [Header("Powerups (unlock at runtime)")]
+    public bool hasSprint     = false;
     public bool hasDoubleJump = false;
     public bool hasGlide = false;
     public bool hasFly = false;
@@ -100,6 +101,7 @@ public class PlayerDogController : MonoBehaviour
         boneIconObj.SetActive(GameState.HasFlag(GameState.HasBone));
 
         // Sync powerup flags from GameState
+        if (GameState.HasFlag("has_sprint"))      hasSprint     = true;
         if (GameState.HasFlag("has_double_jump")) hasDoubleJump = true;
 
         bool grounded = controller.isGrounded;
@@ -139,7 +141,7 @@ public class PlayerDogController : MonoBehaviour
 
         HandleVertical(grounded, moveDir);
 
-        float currentSpeed = isFlying ? flySpeed : (GetSprintHeld() ? sprintSpeed : moveSpeed);
+        float currentSpeed = isFlying ? flySpeed : (hasSprint && GetSprintHeld() ? sprintSpeed : moveSpeed);
         var motion = moveDir * currentSpeed;
         motion.y = verticalVelocity;
         controller.Move(motion * Time.deltaTime);

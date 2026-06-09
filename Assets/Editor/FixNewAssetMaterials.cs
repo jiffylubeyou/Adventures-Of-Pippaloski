@@ -22,7 +22,9 @@ public static class FixNewAssetMaterials
         int count = 0;
         count += FixFolder("Assets/Easy Primitive People", urpLit);
         count += FixFolder("Assets/Bizulka",               urpLit);
-        count += FixFolder("Assets/Metal_Grids_Textures",  urpLit);
+        count += FixFolder("Assets/Metal_Grids_Textures",        urpLit);
+        count += FixFolder("Assets/Building FastFood Drinks",    urpLit);
+        count += FixFolder("Assets/CGM_EgyptPack",             urpLit);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

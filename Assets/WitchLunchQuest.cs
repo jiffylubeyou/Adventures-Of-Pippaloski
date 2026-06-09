@@ -156,7 +156,7 @@ public class WitchLunchQuest : MonoBehaviour
             closesDialogue = true
         };
 
-        ui.OpenDialogue("Witch", "You're back already!", new[] { rewardLine }, _ =>
+        ui.OpenDialogue("Witch", "You're back! You will receive 5 coins plus 1 coin for every second still left on the timer as a tip. I'm always hungry if you need more money", new[] { rewardLine }, _ =>
         {
             GameState.AddCoins(reward);
             ui.CloseDialogue();

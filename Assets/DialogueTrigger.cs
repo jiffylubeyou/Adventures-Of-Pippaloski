@@ -51,18 +51,17 @@ public class DialogueTrigger : MonoBehaviour
         if (player == null) return;
 
         float dist = Vector3.Distance(transform.position, player.position);
-        bool wasInRange = inRange;
         inRange = dist <= talkRadius;
 
         if (inRange && !talking)
         {
-            ui.ShowPrompt("E  talk to " + npcName);
+            ui.RequestPrompt(this, "E  talk to " + npcName, dist);
             if (WasTalkPressed())
                 BeginDialogue();
         }
-        else if (!inRange && !talking)
+        else
         {
-            ui.HidePrompt();
+            ui.ReleasePrompt(this);
         }
 
         if (talking && WasCancelPressed())
@@ -72,7 +71,7 @@ public class DialogueTrigger : MonoBehaviour
     private void BeginDialogue()
     {
         talking = true;
-        ui.HidePrompt();
+        ui.ReleasePrompt(this);
         ui.OpenDialogue(npcName, greeting, GetAvailableLines(), OnOptionChosen);
     }
 
@@ -149,8 +148,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         talking = false;
         ui.CloseDialogue();
-        if (inRange)
-            ui.ShowPrompt("E  talk to " + npcName);
+        // Update will re-register the prompt next frame if still in range
     }
 
     private static bool WasTalkPressed()

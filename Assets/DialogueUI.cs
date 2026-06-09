@@ -20,6 +20,16 @@ public class DialogueUI : MonoBehaviour
         return instance;
     }
 
+    // ---- prompt ownership ----
+    // Each NPC registers itself every frame it is in range.
+    // The UI resolves which one to show (nearest) once per frame in LateUpdate.
+    private struct PromptRequest
+    {
+        public string  message;
+        public float   distance;
+    }
+    private readonly Dictionary<object, PromptRequest> promptRequests = new Dictionary<object, PromptRequest>();
+
     // ---- UI references ----
     private GameObject promptObj;
     private Text promptText;
@@ -44,13 +54,54 @@ public class DialogueUI : MonoBehaviour
     //  Public API
     // ================================================================
 
-    public void ShowPrompt(string message)
+    // Called every frame by any NPC that is in range.
+    // 'key' is just the NPC's MonoBehaviour instance — used as a unique token.
+    public void RequestPrompt(object key, string message, float distance)
     {
-        promptText.text = message;
+        promptRequests[key] = new PromptRequest { message = message, distance = distance };
+    }
+
+    // Called when an NPC goes out of range or starts talking.
+    public void ReleasePrompt(object key)
+    {
+        promptRequests.Remove(key);
+    }
+
+    // Resolves the closest request and updates the prompt display once per frame.
+    private void LateUpdate()
+    {
+        if (panelObj != null && panelObj.activeSelf)
+        {
+            // Dialogue panel is open — suppress all prompts
+            promptRequests.Clear();
+            promptObj.SetActive(false);
+            return;
+        }
+
+        if (promptRequests.Count == 0)
+        {
+            promptObj.SetActive(false);
+            return;
+        }
+
+        string  bestMessage  = null;
+        float   bestDist     = float.MaxValue;
+        foreach (var kv in promptRequests)
+        {
+            if (kv.Value.distance < bestDist)
+            {
+                bestDist    = kv.Value.distance;
+                bestMessage = kv.Value.message;
+            }
+        }
+
+        promptText.text = bestMessage;
         promptObj.SetActive(true);
     }
 
-    public void HidePrompt() => promptObj.SetActive(false);
+    // Legacy helpers kept so nothing else breaks
+    public void ShowPrompt(string message) { /* now driven by RequestPrompt */ }
+    public void HidePrompt()              { /* now driven by ReleasePrompt  */ }
 
     public void OpenDialogue(string speaker, string body, DialogueLine[] options, Action<DialogueLine> onChosen)
     {

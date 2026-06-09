@@ -66,7 +66,7 @@ public class WitchLunchQuest : MonoBehaviour
             statusLabel.text = "Return to the Witch!";
             if (dist <= deliveryRadius)
             {
-                CompleteQuest();
+                DeliverBurger();
                 return;
             }
         }
@@ -99,21 +99,30 @@ public class WitchLunchQuest : MonoBehaviour
 
     // ─────────────────────────────────────────────────────────────────────────
 
-    private void CompleteQuest()
+    private void DeliverBurger()
     {
+        // Stop the timer and clear the flag — reward comes through dialogue
         questActive = false;
-
-        int reward = Mathf.CeilToInt(timeLeft) + 5;
-        GameState.AddCoins(reward);
+        int reward  = Mathf.CeilToInt(timeLeft) + 5;
         GameState.ClearFlag("has_burger");
+        HideHUD();
 
-        if (spawnedBurger != null) Destroy(spawnedBurger);
+        // Open a dialogue with the dynamic reward built into the response
+        var ui = DialogueUI.GetOrCreate();
+        var rewardLine = new DialogueLine
+        {
+            playerPrompt   = "Here is your lunch!",
+            npcResponse    = "Ohoho, magnificent! And with " + Mathf.CeilToInt(timeLeft) +
+                             " seconds to spare. Here are your " + reward + " coins, as promised.",
+            closesDialogue = true
+        };
 
-        timerLabel.text  = "Done!";
-        statusLabel.text = "+" + reward + " coins!";
-
-        Debug.Log("[WitchLunchQuest] Complete! Rewarded " + reward + " coins.");
-        Invoke(nameof(HideHUD), 2.5f);
+        ui.OpenDialogue("Witch", "You're back already!", new[] { rewardLine }, _ =>
+        {
+            GameState.AddCoins(reward);
+            ui.CloseDialogue();
+            Debug.Log("[WitchLunchQuest] Delivered! Rewarded " + reward + " coins.");
+        });
     }
 
     private void FailQuest()
@@ -121,6 +130,7 @@ public class WitchLunchQuest : MonoBehaviour
         questActive = false;
         GameState.ClearFlag("has_burger");
 
+        // Despawn burger if player never picked it up
         if (spawnedBurger != null) Destroy(spawnedBurger);
 
         timerLabel.text  = "0s";
@@ -141,12 +151,23 @@ public class WitchLunchQuest : MonoBehaviour
             : transform.position + transform.forward * 8f;
 
         if (burgerPrefab != null)
-        {
             spawnedBurger = Instantiate(burgerPrefab, pos, Quaternion.identity);
-        }
         else
-        {
             spawnedBurger = BuildGeneratedBurger(pos);
+
+        // Always add a known-good trigger collider on the root so BurgerPickup
+        // can reliably detect the player regardless of what the prefab contains.
+        var trigger = spawnedBurger.AddComponent<SphereCollider>();
+        trigger.isTrigger = true;
+        trigger.radius    = 1f;
+
+        // CharacterController fires OnTriggerEnter reliably when the trigger
+        // object also has a kinematic Rigidbody.
+        if (spawnedBurger.GetComponent<Rigidbody>() == null)
+        {
+            var rb            = spawnedBurger.AddComponent<Rigidbody>();
+            rb.isKinematic    = true;
+            rb.useGravity     = false;
         }
 
         if (spawnedBurger.GetComponent<BurgerPickup>() == null)

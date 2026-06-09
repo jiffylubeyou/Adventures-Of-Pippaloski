@@ -59,6 +59,7 @@ public class PlayerDogController : MonoBehaviour
     private Text drownText;
     private Text boneCollectedText;
     private GameObject boneIconObj;
+    private GameObject burgerIconObj;
     private Transform visualModel;
 
     // Rolling buffer of grounded positions recorded over the last safePositionMemory seconds.
@@ -83,6 +84,7 @@ public class PlayerDogController : MonoBehaviour
         drownText = CreateDrownUI();
         boneCollectedText = CreateBoneCollectedUI();
         boneIconObj = CreateBoneIconUI();
+        burgerIconObj = CreateBurgerIconUI();
     }
 
     // Set by RaftController while Pippaloski is aboard
@@ -103,6 +105,8 @@ public class PlayerDogController : MonoBehaviour
 
         // Keep bone icon in sync with the has_bone flag
         boneIconObj.SetActive(GameState.HasFlag(GameState.HasBone));
+        // Keep burger icon in sync with the has_burger flag
+        burgerIconObj.SetActive(GameState.HasFlag("has_burger"));
 
         // Sync powerup flags from GameState
         if (GameState.HasFlag("has_sprint"))      hasSprint     = true;
@@ -365,7 +369,55 @@ public class PlayerDogController : MonoBehaviour
         r.anchoredPosition = anchoredPos;
         var img = go.AddComponent<Image>();
         img.color = color;
-        img.sprite = Resources.Load<Sprite>("UI/Knob"); // Unity's built-in circle sprite
+        img.sprite = Resources.Load<Sprite>("UI/Knob");
+    }
+
+    private static GameObject CreateBurgerIconUI()
+    {
+        var canvas = new GameObject("Burger Icon Canvas").AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 9;
+        canvas.gameObject.AddComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvas.gameObject.AddComponent<GraphicRaycaster>();
+
+        // Sits just to the left of the bone icon in the top-right corner
+        var root = new GameObject("Burger Icon");
+        root.transform.SetParent(canvas.transform, false);
+        var rootRect = root.AddComponent<RectTransform>();
+        rootRect.anchorMin        = new Vector2(1f, 1f);
+        rootRect.anchorMax        = new Vector2(1f, 1f);
+        rootRect.pivot            = new Vector2(1f, 1f);
+        rootRect.sizeDelta        = new Vector2(68f, 68f);
+        rootRect.anchoredPosition = new Vector2(-110f, -20f); // left of the bone icon
+
+        // Bun top (gold/brown disc)
+        MakeBurgerLayer("BunTop",  root.transform, new Color(0.87f, 0.60f, 0.20f),
+            new Vector2(0f,  14f), new Vector2(48f, 18f));
+        // Patty (dark brown)
+        MakeBurgerLayer("Patty",   root.transform, new Color(0.35f, 0.18f, 0.06f),
+            new Vector2(0f,   2f), new Vector2(52f, 10f));
+        // Lettuce (green, slightly wider)
+        MakeBurgerLayer("Lettuce", root.transform, new Color(0.25f, 0.65f, 0.22f),
+            new Vector2(0f,  -4f), new Vector2(56f,  7f));
+        // Bun bottom
+        MakeBurgerLayer("BunBot",  root.transform, new Color(0.87f, 0.60f, 0.20f),
+            new Vector2(0f, -14f), new Vector2(52f, 14f));
+
+        root.SetActive(false);
+        return root;
+    }
+
+    private static void MakeBurgerLayer(string name, Transform parent, Color color,
+        Vector2 anchoredPos, Vector2 size)
+    {
+        var go = new GameObject(name);
+        go.transform.SetParent(parent, false);
+        var r = go.AddComponent<RectTransform>();
+        r.anchorMin        = new Vector2(0.5f, 0.5f);
+        r.anchorMax        = new Vector2(0.5f, 0.5f);
+        r.sizeDelta        = size;
+        r.anchoredPosition = anchoredPos;
+        go.AddComponent<Image>().color = color;
     }
 
     // ---------- death UI ----------

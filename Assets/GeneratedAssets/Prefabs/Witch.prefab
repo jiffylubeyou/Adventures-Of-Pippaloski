@@ -2608,7 +2608,7 @@ MonoBehaviour:
   questDuration: 60
   burgerSpawnPoint: {fileID: 0}
   burgerPrefab: {fileID: 8075010969760539775, guid: 73e3147dc2f6f044892983ba086c1c71, type: 3}
-  deliveryRadius: 3
+  deliveryRadius: 10
 --- !u!1 &5510354860662738450
 GameObject:
   m_ObjectHideFlags: 0

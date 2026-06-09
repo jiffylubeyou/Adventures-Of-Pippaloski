@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 /// <summary>
 /// Attach to the Witch GameObject alongside DialogueTrigger.
 /// When StartQuest() is called (triggered by the "startsWitchLunchQuest" dialogue flag):
 ///   - A countdown timer starts and is shown on screen.
 ///   - The burger spawns at burgerSpawnPoint (or 8 units in front of the witch).
-///   - When the player returns to the witch with the burger, they earn
+///   - When the player returns to the witch with the burger and presses E, they earn
 ///     (secondsRemaining + 5) coins.
 ///   - If time runs out the burger despawns and the quest fails.
 /// </summary>
@@ -22,19 +25,23 @@ public class WitchLunchQuest : MonoBehaviour
     [Tooltip("Optional: assign a burger prefab. Leave empty to use the auto-generated one.")]
     [SerializeField] private GameObject burgerPrefab;
 
-    [Tooltip("How close the player must be to the witch to deliver the burger.")]
-    [SerializeField] private float deliveryRadius = 3f;
+    [Tooltip("How close the player must be (and press E) to deliver the burger. " +
+             "Should be >= the witch's talkRadius (default 4) so the prompt appears in time.")]
+    [SerializeField] private float deliveryRadius = 5f;
 
     // ── state ─────────────────────────────────────────────────────────────────
-    private bool        questActive   = false;
-    private float       timeLeft      = 0f;
-    private GameObject  spawnedBurger = null;
+    private bool        questActive    = false;
+    private float       timeLeft       = 0f;
+    private GameObject  spawnedBurger  = null;
     private Transform   playerTransform;
+
+    // ── sibling component (normal witch dialogue) ─────────────────────────────
+    private DialogueTrigger dialogueTrigger;
 
     // ── HUD ───────────────────────────────────────────────────────────────────
     private GameObject hudRoot;
-    private Text       timerLabel;
-    private Text       statusLabel;
+    private Text        timerLabel;
+    private Text        statusLabel;
 
     // ─────────────────────────────────────────────────────────────────────────
 
@@ -45,12 +52,55 @@ public class WitchLunchQuest : MonoBehaviour
                      ?? GameObject.Find("Player Border Collie");
         if (playerObj != null) playerTransform = playerObj.transform;
 
+        dialogueTrigger = GetComponent<DialogueTrigger>();
+
         BuildHUD();
         hudRoot.SetActive(false);
     }
 
     private void Update()
     {
+        bool hasBurger = GameState.HasFlag("has_burger");
+
+        // ── Delivery intercept ────────────────────────────────────────────────
+        // While the player is carrying the burger, suppress the witch's normal
+        // dialogue and show a custom "deliver" prompt so pressing E triggers
+        // delivery instead of opening the regular witch menu.
+        if (questActive && hasBurger && playerTransform != null)
+        {
+            float dist    = Vector3.Distance(transform.position, playerTransform.position);
+            bool  inRange = dist <= deliveryRadius;
+
+            // Disable normal DialogueTrigger so pressing E won't open regular dialogue.
+            if (dialogueTrigger != null)
+                dialogueTrigger.enabled = false;
+
+            if (inRange)
+            {
+                DialogueUI.GetOrCreate().RequestPrompt(this, "E  deliver lunch to Witch", dist);
+
+                if (WasTalkPressed())
+                {
+                    DialogueUI.GetOrCreate().ReleasePrompt(this);
+                    DeliverBurger();
+                    return;
+                }
+            }
+            else
+            {
+                DialogueUI.GetOrCreate().ReleasePrompt(this);
+            }
+        }
+        else
+        {
+            // Not in delivery mode — make sure normal dialogue is restored.
+            if (dialogueTrigger != null && !dialogueTrigger.enabled)
+                dialogueTrigger.enabled = true;
+
+            DialogueUI.GetOrCreate().ReleasePrompt(this);
+        }
+
+        // ── Timer tick ────────────────────────────────────────────────────────
         if (!questActive) return;
 
         timeLeft -= Time.deltaTime;
@@ -59,27 +109,13 @@ public class WitchLunchQuest : MonoBehaviour
         timerLabel.text  = secs + "s";
         timerLabel.color = secs <= 10 ? new Color(1f, 0.3f, 0.2f) : Color.white;
 
-        // Check for delivery
-        if (GameState.HasFlag("has_burger") && playerTransform != null)
-        {
-            float dist = Vector3.Distance(transform.position, playerTransform.position);
-            statusLabel.text = "Return to the Witch!";
-            if (dist <= deliveryRadius)
-            {
-                DeliverBurger();
-                return;
-            }
-        }
-        else
-        {
-            statusLabel.text = "Retrieve the burger!";
-        }
+        statusLabel.text = hasBurger ? "Return to the Witch!" : "Retrieve the burger!";
 
         if (timeLeft <= 0f)
             FailQuest();
     }
 
-    // ── Called by DialogueTrigger via SendMessage ─────────────────────────────
+    // ── Called by DialogueTrigger when "startsWitchLunchQuest" line is chosen ──
 
     public void StartQuest()
     {
@@ -101,19 +137,22 @@ public class WitchLunchQuest : MonoBehaviour
 
     private void DeliverBurger()
     {
-        // Stop the timer and clear the flag — reward comes through dialogue
         questActive = false;
         int reward  = Mathf.CeilToInt(timeLeft) + 5;
+
         GameState.ClearFlag("has_burger");
         HideHUD();
 
-        // Open a dialogue with the dynamic reward built into the response
+        // Re-enable normal dialogue after the delivery conversation ends.
+        if (dialogueTrigger != null)
+            dialogueTrigger.enabled = true;
+
         var ui = DialogueUI.GetOrCreate();
         var rewardLine = new DialogueLine
         {
             playerPrompt   = "Here is your lunch!",
             npcResponse    = "Ohoho, magnificent! And with " + Mathf.CeilToInt(timeLeft) +
-                             " seconds to spare. Here are your " + reward + " coins, as promised.",
+                             " seconds to spare. Here are your " + reward + " coins, as promised!",
             closesDialogue = true
         };
 
@@ -130,7 +169,12 @@ public class WitchLunchQuest : MonoBehaviour
         questActive = false;
         GameState.ClearFlag("has_burger");
 
-        // Despawn burger if player never picked it up
+        // Re-enable normal dialogue.
+        if (dialogueTrigger != null)
+            dialogueTrigger.enabled = true;
+
+        DialogueUI.GetOrCreate().ReleasePrompt(this);
+
         if (spawnedBurger != null) Destroy(spawnedBurger);
 
         timerLabel.text  = "0s";
@@ -157,7 +201,7 @@ public class WitchLunchQuest : MonoBehaviour
 
         // Always add a known-good trigger collider on the root so BurgerPickup
         // can reliably detect the player regardless of what the prefab contains.
-        var trigger = spawnedBurger.AddComponent<SphereCollider>();
+        var trigger       = spawnedBurger.AddComponent<SphereCollider>();
         trigger.isTrigger = true;
         trigger.radius    = 1f;
 
@@ -165,9 +209,9 @@ public class WitchLunchQuest : MonoBehaviour
         // object also has a kinematic Rigidbody.
         if (spawnedBurger.GetComponent<Rigidbody>() == null)
         {
-            var rb            = spawnedBurger.AddComponent<Rigidbody>();
-            rb.isKinematic    = true;
-            rb.useGravity     = false;
+            var rb         = spawnedBurger.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            rb.useGravity  = false;
         }
 
         if (spawnedBurger.GetComponent<BurgerPickup>() == null)
@@ -178,10 +222,6 @@ public class WitchLunchQuest : MonoBehaviour
     {
         var root = new GameObject("Burger");
         root.transform.position = position;
-
-        var col      = root.AddComponent<SphereCollider>();
-        col.isTrigger = true;
-        col.radius    = 0.7f;
 
         AddLayer(root.transform, "BottomBun", new Color(0.87f, 0.60f, 0.20f), new Vector3(0f, 0.10f, 0f), new Vector3(0.9f, 0.18f, 0.9f));
         AddLayer(root.transform, "Lettuce",   new Color(0.28f, 0.68f, 0.25f), new Vector3(0f, 0.26f, 0f), new Vector3(1.0f, 0.06f, 1.0f));
@@ -258,6 +298,17 @@ public class WitchLunchQuest : MonoBehaviour
         timerLabel.fontStyle = FontStyle.Bold;
         timerLabel.alignment = TextAnchor.MiddleCenter;
         timerLabel.color     = Color.white;
+    }
+
+    // ── Input helper ──────────────────────────────────────────────────────────
+
+    private static bool WasTalkPressed()
+    {
+#if ENABLE_INPUT_SYSTEM
+        return Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame;
+#else
+        return Input.GetKeyDown(KeyCode.E);
+#endif
     }
 }
 

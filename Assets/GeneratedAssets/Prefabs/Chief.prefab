@@ -480,6 +480,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
+    opensShop: 0
     followUpLines: []
   - playerPrompt: Gimmie yoour boat
     npcResponse: No. First you must complete the quest I have commissioned you
@@ -493,6 +494,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
+    opensShop: 0
     followUpLines: []
   - playerPrompt: I would like to embark on a quest
     npcResponse: Alright, you must find a powerful and ancient bone that is lost
@@ -507,6 +509,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
+    opensShop: 0
     followUpLines:
     - playerPrompt: Alright, I'll do it
       npcResponse: Good... Good... Bring me a white bone that is lost to me
@@ -520,6 +523,7 @@ MonoBehaviour:
       clearsFlags: []
       setsFlags: []
       grantsBoatAccess: 0
+      opensShop: 0
       followUpLines: []
     - playerPrompt: Take a hike Chief
       npcResponse: Your loss
@@ -533,6 +537,7 @@ MonoBehaviour:
       clearsFlags: []
       setsFlags: []
       grantsBoatAccess: 0
+      opensShop: 0
       followUpLines: []
   - playerPrompt: I have your bone
     npcResponse: No you don't you little liar
@@ -547,6 +552,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
+    opensShop: 0
     followUpLines: []
   - playerPrompt: I have your bone
     npcResponse: You have found it, I am bound by my word. My boat is yours. It should
@@ -563,9 +569,10 @@ MonoBehaviour:
     - has_bone
     setsFlags: []
     grantsBoatAccess: 1
+    opensShop: 0
     followUpLines: []
   - playerPrompt: Gimmie your boat
-    npcResponse: Bro you already have it, it's around here somewhere
+    npcResponse: Bro you already have it, it's out back
     closesDialogue: 1
     oneTimeOnly: 0
     startsLocked: 1
@@ -576,6 +583,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
+    opensShop: 0
     followUpLines: []
   - playerPrompt: Goodbye
     npcResponse: See ya around kid
@@ -589,6 +597,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
+    opensShop: 0
     followUpLines: []
 --- !u!1 &6583495735208077026
 GameObject:

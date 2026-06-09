@@ -84,11 +84,14 @@ MonoBehaviour:
   mouseSensitivity: 0.12
   drownY: -2
   safePositionMemory: 2.5
-  hasDoubleJump: 0
+  hasSprint: 1
+  hasDoubleJump: 1
   hasGlide: 0
   hasFly: 0
+  hasWallClimb: 1
   glideGravity: -2
   flySpeed: 7
+  wallClimbSpeed: 5
   MotorEnabled: 1
   SuppressDrown: 0
   CamDistanceOverride: 0

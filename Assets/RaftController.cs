@@ -18,6 +18,14 @@ public class RaftController : MonoBehaviour
     [Tooltip("World Y the raft floats at. Match your water plane height.")]
     [SerializeField] private float waterLevel = 0f;
 
+    [Header("Land Collision")]
+    [Tooltip("Half-extents of the collision box swept ahead of the raft. X = half-width, Y = half-height (make tall to catch any island height), Z = half depth of the probe box.")]
+    [SerializeField] private Vector3 hullHalfExtents = new Vector3(1.5f, 8f, 0.6f);
+    [Tooltip("How far ahead of the raft front edge to start the collision check.")]
+    [SerializeField] private float probeDistance = 0.5f;
+    [Tooltip("Layer mask containing the island / terrain. Set this to the 'Island' layer after running Tools > Pippaloski > Setup Island Layer.")]
+    [SerializeField] private LayerMask groundLayer = ~0;  // default: everything
+
     private PlayerDogController playerController;
     private CharacterController playerCharacterController;
     private Transform playerTransform;
@@ -40,6 +48,7 @@ public class RaftController : MonoBehaviour
 
         promptText = CreatePromptUI();
         noKeysText = CreateNoKeysUI();
+
     }
 
     private void Update()
@@ -84,11 +93,39 @@ public class RaftController : MonoBehaviour
     {
         var input = GetMovementInput();
 
-        // Forward/back
-        transform.Translate(Vector3.forward * input.y * raftSpeed * Time.deltaTime, Space.Self);
-
-        // Turn left/right
+        // Turning is always allowed
         transform.Rotate(Vector3.up, input.x * raftTurnSpeed * Time.deltaTime, Space.Self);
+
+        if (Mathf.Abs(input.y) > 0.01f)
+        {
+            float   stepDist  = raftSpeed * Time.deltaTime;
+            Vector3 moveDir   = transform.forward * Mathf.Sign(input.y);
+
+            if (!IsLandAhead(moveDir, stepDist))
+                transform.Translate(Vector3.forward * input.y * stepDist, Space.Self);
+        }
+    }
+
+    // Sweeps a tall box forward in the movement direction.
+    // The box is centred on the raft, pushed ahead by the hull depth + probeDistance,
+    // and is tall enough to catch island geometry at ANY world height, so we don't
+    // need to know or guess the island's exact Y position.
+    private bool IsLandAhead(Vector3 moveDir, float stepDist)
+    {
+        // Centre the box just ahead of the raft's front face
+        float   reach     = hullHalfExtents.z + probeDistance + stepDist;
+        Vector3 boxCenter = transform.position + moveDir * reach;
+        // Keep the box centred on the raft's Y (waterLevel), but hullHalfExtents.y is
+        // set tall (default 8) so it spans well above and below to catch any island height.
+
+        bool hit = Physics.CheckBox(
+            boxCenter,
+            hullHalfExtents,            // half-extents of the probe box
+            transform.rotation,         // aligned with raft facing
+            groundLayer,
+            QueryTriggerInteraction.Ignore);
+
+        return hit;
     }
 
     private void Board()
@@ -154,6 +191,33 @@ public class RaftController : MonoBehaviour
 #else
         return false;
 #endif
+    }
+
+    // ---------- debug ----------
+
+    private void OnDrawGizmos()
+    {
+        float   reach     = hullHalfExtents.z + probeDistance + 0.1f;
+        Vector3 boxCenter = transform.position + transform.forward * reach;
+
+        bool hit = Physics.CheckBox(boxCenter, hullHalfExtents, transform.rotation,
+            groundLayer, QueryTriggerInteraction.Ignore);
+
+        // Green = clear, red = land detected
+        Gizmos.color = hit ? new Color(1f, 0.1f, 0.1f, 0.45f) : new Color(0.1f, 1f, 0.1f, 0.35f);
+        Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
+        Gizmos.DrawCube(Vector3.zero, hullHalfExtents * 2f);
+        Gizmos.matrix = Matrix4x4.identity;
+
+        // Outline
+        Gizmos.color = hit ? Color.red : Color.green;
+        Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, hullHalfExtents * 2f);
+        Gizmos.matrix = Matrix4x4.identity;
+
+        // Water level dot
+        Gizmos.color = new Color(0.2f, 0.6f, 1f, 0.8f);
+        Gizmos.DrawSphere(new Vector3(transform.position.x, waterLevel, transform.position.z), 0.4f);
     }
 
     // ---------- no-keys flash ----------

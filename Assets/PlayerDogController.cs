@@ -127,6 +127,12 @@ public class PlayerDogController : MonoBehaviour
 #if UNITY_EDITOR
         if (GetCheatCoinsPressed())
             GameState.AddCoins(50);
+        if (GetCheatBoatPressed())
+        {
+            GameState.SetFlag(GameState.QuestComplete);
+            GameState.SetFlag(GameState.HasBone);
+            Debug.Log("[Cheat] Boat ownership granted.");
+        }
 #endif
 
         if (!MotorEnabled) return;
@@ -513,6 +519,18 @@ public class PlayerDogController : MonoBehaviour
         return kb != null && kb.leftShiftKey.isPressed && kb.cKey.wasPressedThisFrame;
 #elif ENABLE_LEGACY_INPUT_MANAGER
         return Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.C);
+#else
+        return false;
+#endif
+    }
+
+    private static bool GetCheatBoatPressed()
+    {
+#if ENABLE_INPUT_SYSTEM
+        var kb = Keyboard.current;
+        return kb != null && kb.leftShiftKey.isPressed && kb.bKey.wasPressedThisFrame;
+#elif ENABLE_LEGACY_INPUT_MANAGER
+        return Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.B);
 #else
         return false;
 #endif

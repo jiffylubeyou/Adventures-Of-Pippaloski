@@ -2535,7 +2535,7 @@ MonoBehaviour:
       closesDialogue: 1
       oneTimeOnly: 0
       startsLocked: 0
-      unlocksLineIndices: 
+      unlocksLineIndices: 02000000
       locksLineIndices: 
       requiredFlags: []
       forbiddenFlags: []

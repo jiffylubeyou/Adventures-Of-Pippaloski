@@ -5715,6 +5715,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3637134996410565414, guid: 9c6178fe943216540b276b975dafae16, type: 3}
   m_PrefabInstance: {fileID: 1532246740}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &860141385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 860141386}
+  m_Layer: 0
+  m_Name: Burger Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &860141386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860141385}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -12.5, y: 0.41, z: 1}
+  m_LocalScale: {x: 0.6280618, y: 0.6280618, z: 0.6280618}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1215938811}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &864269196 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5707813131339434805, guid: b995a96a7ca36d04b851e46870b5aadf, type: 3}
@@ -8068,6 +8099,7 @@ Transform:
   - {fileID: 1926336991}
   - {fileID: 1759865084}
   - {fileID: 834898387148659635}
+  - {fileID: 860141386}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1217442972
@@ -14153,6 +14185,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1215938811}
     m_Modifications:
+    - target: {fileID: 1151951561045918476, guid: dd6be794fa6c4214a90439db66c70ec3, type: 3}
+      propertyPath: burgerSpawnPoint
+      value: 
+      objectReference: {fileID: 860141386}
     - target: {fileID: 5436354476281076278, guid: dd6be794fa6c4214a90439db66c70ec3, type: 3}
       propertyPath: m_Name
       value: Witch

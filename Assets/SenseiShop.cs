@@ -7,13 +7,11 @@ public class SenseiShop : MonoBehaviour
     [System.Serializable]
     public class ShopItem
     {
-        public string itemName    = "Item";
+        public string itemName        = "Item";
         [TextArea(1, 2)]
-        public string description = "A mysterious item.";
-        public int    price       = 10;
-        // GameState flag set on purchase (leave blank for none)
-        public string grantsFlag  = "";
-        // Hide this item once it has been bought
+        public string description     = "A mysterious item.";
+        public int    price           = 10;
+        public string grantsFlag      = "";
         public bool   oneTimePurchase = false;
         [HideInInspector] public bool purchased = false;
     }
@@ -21,210 +19,262 @@ public class SenseiShop : MonoBehaviour
     [Header("Shop Items")]
     [SerializeField] private List<ShopItem> items = new List<ShopItem>();
 
-    // ── UI state ──────────────────────────────────────────────────
-    private GameObject  canvasObj;
-    private Transform   itemListParent;
-    private Text        coinDisplay;
-    private bool        shopBuilt = false;
+    private GameObject canvasObj;
+    private Transform  itemListParent;
+    private Text       coinDisplay;
+    private bool       shopBuilt = false;
 
-    // ── Public entry point ────────────────────────────────────────
+    // ── Public entry ──────────────────────────────────────────────
 
     public void OpenShop()
     {
         if (!shopBuilt) BuildShopUI();
         RefreshItems();
         canvasObj.SetActive(true);
-
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible   = true;
-
         var player = FindObjectOfType<PlayerDogController>();
         if (player != null) player.MotorEnabled = false;
     }
 
-    // ── Build UI (called once) ────────────────────────────────────
+    // ── Build UI ──────────────────────────────────────────────────
 
     private void BuildShopUI()
     {
         shopBuilt = true;
 
-        // Root canvas
+        // Canvas
         canvasObj = new GameObject("Sensei Shop Canvas");
         var canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode  = RenderMode.ScreenSpaceOverlay;
+        canvas.renderMode   = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = 30;
         canvasObj.AddComponent<CanvasScaler>().uiScaleMode =
             CanvasScaler.ScaleMode.ScaleWithScreenSize;
         canvasObj.AddComponent<GraphicRaycaster>();
         DontDestroyOnLoad(canvasObj);
 
-        // Dim overlay
-        var overlay = MakeImage("Overlay", canvas.transform,
-            Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f),
-            Vector2.zero, Vector2.zero,
-            new Color(0f, 0f, 0f, 0.6f));
+        // Dim background
+        var bg = new GameObject("Bg");
+        bg.transform.SetParent(canvasObj.transform, false);
+        var bgR = bg.AddComponent<RectTransform>();
+        bgR.anchorMin = Vector2.zero; bgR.anchorMax = Vector2.one;
+        bgR.offsetMin = bgR.offsetMax = Vector2.zero;
+        bg.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.55f);
 
-        // Panel
-        var panel = MakeImage("Shop Panel", canvas.transform,
-            new Vector2(0.2f, 0.1f), new Vector2(0.8f, 0.9f), new Vector2(0.5f, 0.5f),
-            Vector2.zero, Vector2.zero,
-            new Color(0.07f, 0.07f, 0.07f, 0.97f));
+        // Panel — fixed pixel size, centred
+        var panel = new GameObject("Panel");
+        panel.transform.SetParent(canvasObj.transform, false);
+        var panelR = panel.AddComponent<RectTransform>();
+        panelR.anchorMin        = new Vector2(0.5f, 0.5f);
+        panelR.anchorMax        = new Vector2(0.5f, 0.5f);
+        panelR.pivot            = new Vector2(0.5f, 0.5f);
+        panelR.sizeDelta        = new Vector2(560f, 460f);
+        panelR.anchoredPosition = Vector2.zero;
+        panel.AddComponent<Image>().color = new Color(0.08f, 0.08f, 0.08f, 0.97f);
 
-        // Title
-        var title = MakeText("Title", panel.transform, 32, FontStyle.Bold,
-            new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(0f, -50f), new Vector2(0f, 0f));
-        title.text      = "Sensei's Shop";
-        title.alignment = TextAnchor.MiddleCenter;
-        title.color     = new Color(1f, 0.78f, 0.1f);
+        // ── Header row ───────────────────────────────────────────
+        var header = new GameObject("Header");
+        header.transform.SetParent(panel.transform, false);
+        var headerR = header.AddComponent<RectTransform>();
+        headerR.anchorMin        = new Vector2(0f, 1f);
+        headerR.anchorMax        = new Vector2(1f, 1f);
+        headerR.pivot            = new Vector2(0.5f, 1f);
+        headerR.offsetMin        = new Vector2(0f, -56f);
+        headerR.offsetMax        = new Vector2(0f, 0f);
 
-        // Divider
-        var div = MakeImage("Divider", panel.transform,
-            new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(16f, -55f), new Vector2(-16f, -52f),
-            new Color(1f, 0.78f, 0.1f, 0.5f));
+        var titleT = header.AddComponent<Text>();
+        titleT.text      = "Sensei's Shop";
+        titleT.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        titleT.fontSize  = 28;
+        titleT.fontStyle = FontStyle.Bold;
+        titleT.alignment = TextAnchor.MiddleCenter;
+        titleT.color     = new Color(1f, 0.78f, 0.1f);
 
-        // Coin display (top-right of panel)
-        var coinObj = MakeText("Coins", panel.transform, 22, FontStyle.Bold,
-            new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(1f, 1f),
-            new Vector2(-16f, -50f), new Vector2(0f, 0f));
-        coinObj.alignment = TextAnchor.UpperRight;
-        coinObj.color     = new Color(1f, 0.85f, 0.2f);
-        coinDisplay       = coinObj;
+        // Coin display — top right of panel
+        var coinGO = new GameObject("CoinDisplay");
+        coinGO.transform.SetParent(panel.transform, false);
+        var coinR = coinGO.AddComponent<RectTransform>();
+        coinR.anchorMin        = new Vector2(1f, 1f);
+        coinR.anchorMax        = new Vector2(1f, 1f);
+        coinR.pivot            = new Vector2(1f, 1f);
+        coinR.sizeDelta        = new Vector2(140f, 40f);
+        coinR.anchoredPosition = new Vector2(-12f, -8f);
+        coinDisplay            = coinGO.AddComponent<Text>();
+        coinDisplay.font       = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        coinDisplay.fontSize   = 20;
+        coinDisplay.fontStyle  = FontStyle.Bold;
+        coinDisplay.alignment  = TextAnchor.MiddleRight;
+        coinDisplay.color      = new Color(1f, 0.85f, 0.2f);
 
-        // Scrollable item list
-        var scrollObj = new GameObject("Scroll");
-        scrollObj.transform.SetParent(panel.transform, false);
-        var scrollRect = scrollObj.AddComponent<RectTransform>();
-        scrollRect.anchorMin        = new Vector2(0f, 0f);
-        scrollRect.anchorMax        = new Vector2(1f, 1f);
-        scrollRect.offsetMin        = new Vector2(16f, 60f);
-        scrollRect.offsetMax        = new Vector2(-16f, -65f);
-        var scroll = scrollObj.AddComponent<ScrollRect>();
-        scroll.horizontal = false;
+        // Gold divider line
+        var div = new GameObject("Divider");
+        div.transform.SetParent(panel.transform, false);
+        var divR = div.AddComponent<RectTransform>();
+        divR.anchorMin = new Vector2(0f, 1f);
+        divR.anchorMax = new Vector2(1f, 1f);
+        divR.pivot     = new Vector2(0.5f, 1f);
+        divR.offsetMin = new Vector2(16f, -58f);
+        divR.offsetMax = new Vector2(-16f, -56f);
+        div.AddComponent<Image>().color = new Color(1f, 0.78f, 0.1f, 0.4f);
 
-        var viewport = new GameObject("Viewport");
-        viewport.transform.SetParent(scrollObj.transform, false);
-        var vpRect = viewport.AddComponent<RectTransform>();
-        vpRect.anchorMin = Vector2.zero; vpRect.anchorMax = Vector2.one;
-        vpRect.offsetMin = vpRect.offsetMax = Vector2.zero;
-        viewport.AddComponent<Image>().color = Color.clear;
-        viewport.AddComponent<Mask>().showMaskGraphic = false;
-        scroll.viewport = vpRect;
-
-        var content = new GameObject("Content");
-        content.transform.SetParent(viewport.transform, false);
-        var contentRect = content.AddComponent<RectTransform>();
-        contentRect.anchorMin = new Vector2(0f, 1f);
-        contentRect.anchorMax = new Vector2(1f, 1f);
-        contentRect.pivot     = new Vector2(0.5f, 1f);
-        contentRect.offsetMin = contentRect.offsetMax = Vector2.zero;
-        var vlg = content.AddComponent<VerticalLayoutGroup>();
-        vlg.spacing             = 8f;
-        vlg.padding             = new RectOffset(0, 0, 0, 8);
+        // ── Item list — simple VLG, no scroll ────────────────────
+        var listGO = new GameObject("ItemList");
+        listGO.transform.SetParent(panel.transform, false);
+        var listR = listGO.AddComponent<RectTransform>();
+        listR.anchorMin = new Vector2(0f, 0f);
+        listR.anchorMax = new Vector2(1f, 1f);
+        listR.offsetMin = new Vector2(16f, 60f);
+        listR.offsetMax = new Vector2(-16f, -64f);
+        var vlg = listGO.AddComponent<VerticalLayoutGroup>();
+        vlg.spacing               = 8f;
+        vlg.padding               = new RectOffset(0, 0, 4, 4);
         vlg.childForceExpandWidth  = true;
         vlg.childForceExpandHeight = false;
-        vlg.childControlHeight     = true;
         vlg.childControlWidth      = true;
-        content.AddComponent<ContentSizeFitter>().verticalFit =
-            ContentSizeFitter.FitMode.PreferredSize;
-        scroll.content      = contentRect;
-        itemListParent      = content.transform;
+        vlg.childControlHeight     = true;
+        vlg.childAlignment         = TextAnchor.UpperCenter;
+        itemListParent = listGO.transform;
 
-        // Close button
-        var closeBtn = MakeImage("Close Button", panel.transform,
-            new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(1f, 0f),
-            new Vector2(-16f, 16f), new Vector2(0f, 56f),
-            new Color(0.6f, 0.1f, 0.1f, 1f));
-        var closeBtnComp = closeBtn.gameObject.AddComponent<Button>();
-        closeBtnComp.onClick.AddListener(CloseShop);
-        var closeTxt = MakeText("Label", closeBtn.transform, 20, FontStyle.Bold,
-            Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f),
-            Vector2.zero, Vector2.zero);
+        // ── Close button ─────────────────────────────────────────
+        var closeGO = new GameObject("CloseBtn");
+        closeGO.transform.SetParent(panel.transform, false);
+        var closeR = closeGO.AddComponent<RectTransform>();
+        closeR.anchorMin        = new Vector2(0.5f, 0f);
+        closeR.anchorMax        = new Vector2(0.5f, 0f);
+        closeR.pivot            = new Vector2(0.5f, 0f);
+        closeR.sizeDelta        = new Vector2(120f, 38f);
+        closeR.anchoredPosition = new Vector2(0f, 12f);
+        closeGO.AddComponent<Image>().color = new Color(0.55f, 0.1f, 0.1f);
+        var closeBtn = closeGO.AddComponent<Button>();
+        closeBtn.onClick.AddListener(CloseShop);
+        var closeLbl = new GameObject("Label");
+        closeLbl.transform.SetParent(closeGO.transform, false);
+        var closeLblR = closeLbl.AddComponent<RectTransform>();
+        closeLblR.anchorMin = Vector2.zero; closeLblR.anchorMax = Vector2.one;
+        closeLblR.offsetMin = closeLblR.offsetMax = Vector2.zero;
+        var closeTxt = closeLbl.AddComponent<Text>();
         closeTxt.text      = "Close";
+        closeTxt.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        closeTxt.fontSize  = 20; closeTxt.fontStyle = FontStyle.Bold;
         closeTxt.alignment = TextAnchor.MiddleCenter;
 
         canvasObj.SetActive(false);
     }
 
-    // ── Refresh item rows each time shop opens ────────────────────
+    // ── Refresh rows ──────────────────────────────────────────────
 
     private void RefreshItems()
     {
         coinDisplay.text = "⬤  " + GameState.Coins;
 
-        // Clear old rows
-        foreach (Transform child in itemListParent)
-            Destroy(child.gameObject);
+        for (int c = itemListParent.childCount - 1; c >= 0; c--)
+            DestroyImmediate(itemListParent.GetChild(c).gameObject);
 
-        for (int i = 0; i < items.Count; i++)
+        foreach (var item in items)
         {
-            var item = items[i];
             if (item.oneTimePurchase && item.purchased) continue;
-
-            int capturedIndex = i;
-            bool canAfford    = GameState.Coins >= item.price;
-
-            // Row background
-            var row = new GameObject("Row_" + item.itemName);
-            row.transform.SetParent(itemListParent, false);
-            var rowImg = row.AddComponent<Image>();
-            rowImg.color = new Color(0.15f, 0.15f, 0.15f, 0.9f);
-            var le = row.AddComponent<LayoutElement>();
-            le.preferredHeight = 72f;
-            le.flexibleWidth   = 1f;
-
-            // Item name
-            var nameT = MakeText("Name", row.transform, 20, FontStyle.Bold,
-                new Vector2(0f, 0.5f), new Vector2(0.6f, 0.5f), new Vector2(0f, 0.5f),
-                new Vector2(12f, 0f), new Vector2(0f, 0f));
-            nameT.text      = item.itemName;
-            nameT.alignment = TextAnchor.MiddleLeft;
-
-            // Description
-            var descT = MakeText("Desc", row.transform, 15, FontStyle.Normal,
-                new Vector2(0f, 0f), new Vector2(0.6f, 0.45f), new Vector2(0f, 0f),
-                new Vector2(12f, 6f), new Vector2(0f, 0f));
-            descT.text      = item.description;
-            descT.color     = new Color(0.75f, 0.75f, 0.75f);
-            descT.alignment = TextAnchor.LowerLeft;
-
-            // Price tag
-            var priceT = MakeText("Price", row.transform, 18, FontStyle.Bold,
-                new Vector2(0.6f, 0.5f), new Vector2(0.75f, 0.5f), new Vector2(0.5f, 0.5f),
-                Vector2.zero, Vector2.zero);
-            priceT.text      = "⬤ " + item.price;
-            priceT.color     = canAfford ? new Color(1f, 0.78f, 0.1f) : new Color(0.6f, 0.4f, 0.4f);
-            priceT.alignment = TextAnchor.MiddleCenter;
-
-            // Buy button
-            var buyBg = MakeImage("Buy", row.transform,
-                new Vector2(0.75f, 0.15f), new Vector2(0.97f, 0.85f), new Vector2(0.5f, 0.5f),
-                Vector2.zero, Vector2.zero,
-                canAfford ? new Color(0.1f, 0.45f, 0.15f) : new Color(0.25f, 0.25f, 0.25f));
-            var buyBtn = buyBg.gameObject.AddComponent<Button>();
-            buyBtn.interactable = canAfford;
-            buyBtn.onClick.AddListener(() => OnBuyClicked(capturedIndex));
-            var buyTxt = MakeText("Label", buyBg.transform, 18, FontStyle.Bold,
-                Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f),
-                Vector2.zero, Vector2.zero);
-            buyTxt.text      = "Buy";
-            buyTxt.alignment = TextAnchor.MiddleCenter;
+            BuildRow(item);
         }
     }
 
+    private void BuildRow(ShopItem item)
+    {
+        bool canAfford = GameState.Coins >= item.price;
+        int  idx       = items.IndexOf(item);
+
+        // Row container
+        var row = new GameObject("Row");
+        row.transform.SetParent(itemListParent, false);
+        row.AddComponent<Image>().color = new Color(0.16f, 0.16f, 0.16f);
+        var rowLE = row.AddComponent<LayoutElement>();
+        rowLE.preferredHeight = 68f;
+        rowLE.flexibleWidth   = 1f;
+        var hlg = row.AddComponent<HorizontalLayoutGroup>();
+        hlg.padding               = new RectOffset(12, 12, 0, 0);
+        hlg.spacing               = 10f;
+        hlg.childAlignment        = TextAnchor.MiddleLeft;
+        hlg.childForceExpandWidth  = false;
+        hlg.childForceExpandHeight = true;
+        hlg.childControlWidth      = true;
+        hlg.childControlHeight     = true;
+
+        // Info (name + desc stacked)
+        var info = new GameObject("Info");
+        info.transform.SetParent(row.transform, false);
+        info.AddComponent<LayoutElement>().flexibleWidth = 1f;
+        var infoVLG = info.AddComponent<VerticalLayoutGroup>();
+        infoVLG.childForceExpandWidth  = true;
+        infoVLG.childForceExpandHeight = false;
+        infoVLG.childControlWidth      = true;
+        infoVLG.childControlHeight     = true;
+        infoVLG.childAlignment         = TextAnchor.MiddleLeft;
+        infoVLG.spacing = 2f;
+
+        AddText(info.transform, item.itemName, 19, FontStyle.Bold,
+            Color.white, 28f);
+        AddText(info.transform, item.description, 13, FontStyle.Normal,
+            new Color(0.7f, 0.7f, 0.7f), 22f);
+
+        // Price
+        var priceColor = canAfford ? new Color(1f, 0.8f, 0.15f) : new Color(0.6f, 0.35f, 0.35f);
+        var priceLE = AddText(row.transform, "⬤ " + item.price, 17, FontStyle.Bold,
+            priceColor, 0f);
+        priceLE.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+        priceLE.GetComponent<LayoutElement>().preferredWidth = 72f;
+
+        // Buy button
+        var buyGO = new GameObject("Buy");
+        buyGO.transform.SetParent(row.transform, false);
+        buyGO.AddComponent<Image>().color =
+            canAfford ? new Color(0.1f, 0.42f, 0.14f) : new Color(0.22f, 0.22f, 0.22f);
+        var buyBtnLE = buyGO.AddComponent<LayoutElement>();
+        buyBtnLE.preferredWidth  = 72f;
+        buyBtnLE.preferredHeight = 40f;
+        var buyBtn = buyGO.AddComponent<Button>();
+        buyBtn.interactable = canAfford;
+        int captured = idx;
+        buyBtn.onClick.AddListener(() => OnBuyClicked(captured));
+
+        var buyLbl = new GameObject("Lbl");
+        buyLbl.transform.SetParent(buyGO.transform, false);
+        var buyLblR = buyLbl.AddComponent<RectTransform>();
+        buyLblR.anchorMin = Vector2.zero; buyLblR.anchorMax = Vector2.one;
+        buyLblR.offsetMin = buyLblR.offsetMax = Vector2.zero;
+        var buyT = buyLbl.AddComponent<Text>();
+        buyT.text = "Buy"; buyT.fontSize = 17; buyT.fontStyle = FontStyle.Bold;
+        buyT.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        buyT.alignment = TextAnchor.MiddleCenter;
+    }
+
+    // Creates a Text GO, adds LayoutElement with preferredHeight, returns the GO
+    private static GameObject AddText(Transform parent, string content,
+        int size, FontStyle style, Color color, float preferredHeight)
+    {
+        var go = new GameObject("Text");
+        go.transform.SetParent(parent, false);
+        var t = go.AddComponent<Text>();
+        t.text      = content;
+        t.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        t.fontSize  = size;
+        t.fontStyle = style;
+        t.color     = color;
+        t.horizontalOverflow = HorizontalWrapMode.Wrap;
+        var le = go.AddComponent<LayoutElement>();
+        if (preferredHeight > 0f) le.preferredHeight = preferredHeight;
+        le.flexibleWidth = 1f;
+        return go;
+    }
+
+    // ── Buy / Close ───────────────────────────────────────────────
+
     private void OnBuyClicked(int index)
     {
+        if (index < 0 || index >= items.Count) return;
         var item = items[index];
         if (!GameState.SpendCoins(item.price)) return;
-
-        if (!string.IsNullOrEmpty(item.grantsFlag))
-            GameState.SetFlag(item.grantsFlag);
-
-        if (item.oneTimePurchase)
-            item.purchased = true;
-
-        RefreshItems();   // update coin display + grey out bought items
+        if (!string.IsNullOrEmpty(item.grantsFlag)) GameState.SetFlag(item.grantsFlag);
+        if (item.oneTimePurchase) item.purchased = true;
+        RefreshItems();
     }
 
     private void CloseShop()
@@ -232,42 +282,7 @@ public class SenseiShop : MonoBehaviour
         canvasObj.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible   = false;
-
         var player = FindObjectOfType<PlayerDogController>();
         if (player != null) player.MotorEnabled = true;
-    }
-
-    // ── UI helpers ────────────────────────────────────────────────
-
-    private static Image MakeImage(string name, Transform parent,
-        Vector2 anchorMin, Vector2 anchorMax, Vector2 pivot,
-        Vector2 offsetMin, Vector2 offsetMax, Color color)
-    {
-        var go = new GameObject(name);
-        go.transform.SetParent(parent, false);
-        var r = go.AddComponent<RectTransform>();
-        r.anchorMin = anchorMin; r.anchorMax = anchorMax; r.pivot = pivot;
-        r.offsetMin = offsetMin; r.offsetMax = offsetMax;
-        var img = go.AddComponent<Image>();
-        img.color = color;
-        return img;
-    }
-
-    private static Text MakeText(string name, Transform parent, int size, FontStyle style,
-        Vector2 anchorMin, Vector2 anchorMax, Vector2 pivot,
-        Vector2 offsetMin, Vector2 offsetMax)
-    {
-        var go = new GameObject(name);
-        go.transform.SetParent(parent, false);
-        var r = go.AddComponent<RectTransform>();
-        r.anchorMin = anchorMin; r.anchorMax = anchorMax; r.pivot = pivot;
-        r.offsetMin = offsetMin; r.offsetMax = offsetMax;
-        var t = go.AddComponent<Text>();
-        t.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        t.fontSize  = size;
-        t.fontStyle = style;
-        t.color     = Color.white;
-        t.horizontalOverflow = HorizontalWrapMode.Wrap;
-        return t;
     }
 }

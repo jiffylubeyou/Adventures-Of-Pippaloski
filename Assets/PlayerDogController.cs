@@ -99,6 +99,9 @@ public class PlayerDogController : MonoBehaviour
         // Keep bone icon in sync with the has_bone flag
         boneIconObj.SetActive(GameState.HasFlag(GameState.HasBone));
 
+        // Sync powerup flags from GameState
+        if (GameState.HasFlag("has_double_jump")) hasDoubleJump = true;
+
         bool grounded = controller.isGrounded;
 
         if (grounded)

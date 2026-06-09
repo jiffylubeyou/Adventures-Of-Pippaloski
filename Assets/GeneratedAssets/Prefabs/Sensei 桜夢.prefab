@@ -880,7 +880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SenseiShop
   items:
   - itemName: Double Jump
-    description: What it sounds like
+    description: It is what it sounds like
     price: 100
     grantsFlag: has_double_jump
     oneTimePurchase: 1

@@ -12668,13 +12668,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
+      propertyPath: items.Array.data[0].description
+      value: It is what it sounds like
+      objectReference: {fileID: 0}
     - target: {fileID: 2469571622011394075, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
       propertyPath: m_Name
       value: "Sensei \u685C\u5922 "
-      objectReference: {fileID: 0}
-    - target: {fileID: 5127833512688494630, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: lines.Array.data[1].npcResponse
-      value: Yes of course my young padawan
       objectReference: {fileID: 0}
     - target: {fileID: 7169063846065633992, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
       propertyPath: m_LocalPosition.x

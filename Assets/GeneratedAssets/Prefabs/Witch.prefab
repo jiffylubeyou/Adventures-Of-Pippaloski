@@ -2438,6 +2438,7 @@ GameObject:
   - component: {fileID: 8926192786512944903}
   - component: {fileID: 1804393686695301186}
   - component: {fileID: 4620466011532387305}
+  - component: {fileID: 1151951561045918476}
   m_Layer: 0
   m_Name: Witch
   m_TagString: Untagged
@@ -2513,6 +2514,7 @@ MonoBehaviour:
     setsFlags: []
     grantsBoatAccess: 0
     opensShop: 0
+    startsWitchLunchQuest: 0
     followUpLines: []
   - playerPrompt: I need money
     npcResponse: I can get some for you. Will you run to burger king and pick someting
@@ -2528,6 +2530,7 @@ MonoBehaviour:
     setsFlags: []
     grantsBoatAccess: 0
     opensShop: 0
+    startsWitchLunchQuest: 0
     followUpLines:
     - playerPrompt: Alright, I'll head out
       npcResponse: Perfect! Be quick my child, the faster you retrive my lunch, the
@@ -2543,6 +2546,7 @@ MonoBehaviour:
       setsFlags: []
       grantsBoatAccess: 0
       opensShop: 0
+      startsWitchLunchQuest: 1
       followUpLines: []
     - playerPrompt: This is too dumb, I can't be bothered with this
       npcResponse: Enjoy being broke I guess
@@ -2557,6 +2561,7 @@ MonoBehaviour:
       setsFlags: []
       grantsBoatAccess: 0
       opensShop: 0
+      startsWitchLunchQuest: 0
       followUpLines: []
   - playerPrompt: How do you always have more coins?
     npcResponse: Consider this a fractional reserve banking system
@@ -2571,6 +2576,7 @@ MonoBehaviour:
     setsFlags: []
     grantsBoatAccess: 0
     opensShop: 0
+    startsWitchLunchQuest: 0
     followUpLines: []
   - playerPrompt: Goodbye
     npcResponse: Yes, yes. Run along now
@@ -2585,7 +2591,24 @@ MonoBehaviour:
     setsFlags: []
     grantsBoatAccess: 0
     opensShop: 0
+    startsWitchLunchQuest: 0
     followUpLines: []
+--- !u!114 &1151951561045918476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5436354476281076278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c8751787324cb41a792c091da9bd74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WitchLunchQuest
+  questDuration: 60
+  burgerSpawnPoint: {fileID: 0}
+  burgerPrefab: {fileID: 8075010969760539775, guid: 73e3147dc2f6f044892983ba086c1c71, type: 3}
+  deliveryRadius: 3
 --- !u!1 &5510354860662738450
 GameObject:
   m_ObjectHideFlags: 0

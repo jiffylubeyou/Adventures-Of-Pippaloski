@@ -111,6 +111,25 @@ public class DialogueTrigger : MonoBehaviour
                 shop?.OpenShop();
             });
         }
+        else if (chosen.startsWitchLunchQuest)
+        {
+            ui.ShowResponse(npcName, chosen.npcResponse, () =>
+            {
+                EndDialogue();
+                // Try same GameObject first, then fall back to scene-wide search
+                var quest = GetComponent<WitchLunchQuest>()
+                         ?? FindObjectOfType<WitchLunchQuest>();
+                if (quest != null)
+                {
+                    quest.StartQuest();
+                    Debug.Log("[DialogueTrigger] StartQuest called on " + quest.gameObject.name);
+                }
+                else
+                {
+                    Debug.LogWarning("[DialogueTrigger] startsWitchLunchQuest is ticked but no WitchLunchQuest component found in scene!");
+                }
+            });
+        }
         else if (chosen.closesDialogue)
         {
             ui.ShowResponse(npcName, chosen.npcResponse, EndDialogue);
@@ -214,6 +233,8 @@ public class DialogueLine
     public bool grantsBoatAccess;
     // Tick this on the line whose response should open the shop afterward
     public bool opensShop;
+    // Tick this on the witch's "be quick" line to start the lunch delivery quest
+    public bool startsWitchLunchQuest;
     // If filled, these options appear after the NPC responds instead of going back to the root menu
     public DialogueLine[] followUpLines;
 }

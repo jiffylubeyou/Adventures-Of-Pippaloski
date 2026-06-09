@@ -272,58 +272,96 @@ public class DialogueUI : MonoBehaviour
         panelObj = new GameObject("Dialogue Panel");
         panelObj.transform.SetParent(transform, false);
 
+        // Anchor to the bottom-centre of the screen, grow upward automatically
         var panelRect = panelObj.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(0.1f, 0f);
         panelRect.anchorMax = new Vector2(0.9f, 0f);
-        panelRect.pivot = new Vector2(0.5f, 0f);
+        panelRect.pivot     = new Vector2(0.5f, 0f);
         panelRect.anchoredPosition = new Vector2(0f, 20f);
-        panelRect.sizeDelta = new Vector2(0f, 280f);
+        panelRect.sizeDelta = new Vector2(0f, 0f); // height driven by CSF
 
         var bg = panelObj.AddComponent<Image>();
         bg.color = new Color(0.05f, 0.05f, 0.05f, 0.92f);
 
-        // Speaker name bar
-        var nameBar = MakeChild("NameBar", panelObj.transform,
-            new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(0f, -30f), new Vector2(0f, 30f));
-        var nameBg = nameBar.AddComponent<Image>();
-        nameBg.color = new Color(0.2f, 0.12f, 0.04f, 1f);
-        speakerText = MakeText(nameBar.transform, 24, FontStyle.Bold, TextAnchor.MiddleLeft, new Vector2(10f, 0f));
+        // VerticalLayoutGroup on the panel so children stack and drive its height
+        var panelVLG = panelObj.AddComponent<VerticalLayoutGroup>();
+        panelVLG.padding               = new RectOffset(0, 0, 0, 8);
+        panelVLG.spacing               = 0f;
+        panelVLG.childForceExpandWidth  = true;
+        panelVLG.childForceExpandHeight = false;
+        panelVLG.childControlWidth      = true;
+        panelVLG.childControlHeight     = true;
 
-        // Body text
-        var bodyArea = MakeChild("Body", panelObj.transform,
-            new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(10f, -70f), new Vector2(-10f, 30f));
-        bodyText = MakeText(bodyArea.transform, 22, FontStyle.Normal, TextAnchor.UpperLeft, Vector2.zero);
+        // ContentSizeFitter makes the panel tall enough to fit everything
+        var csf = panelObj.AddComponent<ContentSizeFitter>();
+        csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        // ── Speaker name bar ─────────────────────────────────────────────────
+        var nameBar = new GameObject("NameBar");
+        nameBar.transform.SetParent(panelObj.transform, false);
+        nameBar.AddComponent<Image>().color = new Color(0.2f, 0.12f, 0.04f, 1f);
+        var nameLE = nameBar.AddComponent<LayoutElement>();
+        nameLE.preferredHeight = 36f;
+        speakerText = MakeText(nameBar.transform, 22, FontStyle.Bold, TextAnchor.MiddleLeft, new Vector2(12f, 0f));
+
+        // ── Body text ────────────────────────────────────────────────────────
+        var bodyArea = new GameObject("Body");
+        bodyArea.transform.SetParent(panelObj.transform, false);
+        var bodyLE = bodyArea.AddComponent<LayoutElement>();
+        bodyLE.minHeight = 60f;
+        bodyLE.flexibleHeight = 1f;
+        bodyText = MakeText(bodyArea.transform, 20, FontStyle.Normal, TextAnchor.UpperLeft, new Vector2(12f, 8f));
         bodyText.horizontalOverflow = HorizontalWrapMode.Wrap;
+        bodyText.verticalOverflow   = VerticalWrapMode.Overflow;
 
-        // Options list (vertical layout)
-        var optionsArea = MakeChild("Options", panelObj.transform,
-            new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0.5f, 0f),
-            new Vector2(10f, 10f), new Vector2(-10f, 170f));
+        // ── Divider ──────────────────────────────────────────────────────────
+        var divider = new GameObject("Divider");
+        divider.transform.SetParent(panelObj.transform, false);
+        divider.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
+        var divLE = divider.AddComponent<LayoutElement>();
+        divLE.preferredHeight = 1f;
+
+        // ── Options list — grows with the number of buttons ──────────────────
+        var optionsArea = new GameObject("Options");
+        optionsArea.transform.SetParent(panelObj.transform, false);
+        var optLE = optionsArea.AddComponent<LayoutElement>();
+        optLE.flexibleHeight = 0f; // let CSF on child drive the height
+
+        var optCSF = optionsArea.AddComponent<ContentSizeFitter>();
+        optCSF.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
         var layout = optionsArea.AddComponent<VerticalLayoutGroup>();
-        layout.spacing = 6f;
-        layout.childForceExpandWidth = true;
+        layout.padding               = new RectOffset(10, 10, 6, 0);
+        layout.spacing               = 6f;
+        layout.childForceExpandWidth  = true;
         layout.childForceExpandHeight = false;
-        layout.childControlHeight = false;
-        layout.childControlWidth = true;
+        layout.childControlHeight     = true;
+        layout.childControlWidth      = true;
         optionParent = optionsArea.transform;
 
-        // Continue button (shown after NPC response)
+        // ── Continue button ──────────────────────────────────────────────────
         continueButtonObj = new GameObject("ContinueButton");
         continueButtonObj.transform.SetParent(panelObj.transform, false);
-        var cr = continueButtonObj.AddComponent<RectTransform>();
-        cr.anchorMin = new Vector2(1f, 0f);
-        cr.anchorMax = new Vector2(1f, 0f);
-        cr.pivot = new Vector2(1f, 0f);
-        cr.sizeDelta = new Vector2(140f, 36f);
-        cr.anchoredPosition = new Vector2(-10f, 10f);
+        var continueLE = continueButtonObj.AddComponent<LayoutElement>();
+        continueLE.preferredHeight = 44f;
         var cImg = continueButtonObj.AddComponent<Image>();
         cImg.color = new Color(0.2f, 0.12f, 0.04f, 1f);
         var cBtn = continueButtonObj.AddComponent<Button>();
         cBtn.onClick.AddListener(() => continueAction?.Invoke());
-        var cText = MakeText(continueButtonObj.transform, 20, FontStyle.Bold, TextAnchor.MiddleCenter, Vector2.zero);
-        cText.text = "Continue  >";
+
+        // Right-align the Continue text
+        var cTextGO = new GameObject("Text");
+        cTextGO.transform.SetParent(continueButtonObj.transform, false);
+        var cTextR = cTextGO.AddComponent<RectTransform>();
+        cTextR.anchorMin = Vector2.zero; cTextR.anchorMax = Vector2.one;
+        cTextR.offsetMin = new Vector2(0f, 0f); cTextR.offsetMax = new Vector2(-14f, 0f);
+        var cText = cTextGO.AddComponent<Text>();
+        cText.text      = "Continue  >";
+        cText.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        cText.fontSize  = 20;
+        cText.fontStyle = FontStyle.Bold;
+        cText.alignment = TextAnchor.MiddleRight;
+        cText.color     = Color.white;
     }
 
     private static GameObject MakeChild(string name, Transform parent,

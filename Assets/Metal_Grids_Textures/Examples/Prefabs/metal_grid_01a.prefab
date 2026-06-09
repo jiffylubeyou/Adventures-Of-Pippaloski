@@ -126,5 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d617139c2b4de964c90950b84941c8e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RisingPlatform
-  riseSpeed: 3
-  riseHeight: 5
+  riseSpeed: 20
+  riseHeight: 100
+  sensorHeight: 1.5
+  sensorSizeX: 5
+  sensorSizeZ: 5

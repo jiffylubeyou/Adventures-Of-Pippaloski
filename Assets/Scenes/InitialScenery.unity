@@ -12669,40 +12669,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.data[1].price
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.data[0].itemName
-      value: Sprint
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.data[1].itemName
-      value: Double Jump
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.data[0].grantsFlag
-      value: has_sprint
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.data[1].grantsFlag
-      value: has_double_jump
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.data[0].description
-      value: Go faster when you hold down shift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.data[1].description
-      value: It is what it sounds like
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881650900999384865, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
-      propertyPath: items.Array.data[1].oneTimePurchase
-      value: 1
+      propertyPath: items.Array.data[2].grantsFlag
+      value: has_wall_climb
       objectReference: {fileID: 0}
     - target: {fileID: 2469571622011394075, guid: aa1010689ca496448912e4d3fccfb5c5, type: 3}
       propertyPath: m_Name

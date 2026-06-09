@@ -32,18 +32,22 @@ public class PlayerDogController : MonoBehaviour
     [Header("Powerups (unlock at runtime)")]
     public bool hasSprint     = false;
     public bool hasDoubleJump = false;
-    public bool hasGlide = false;
-    public bool hasFly = false;
+    public bool hasGlide      = false;
+    public bool hasFly        = false;
+    public bool hasWallClimb  = false;
 
     [Header("Powerup Tuning")]
-    [SerializeField] private float glideGravity = -2f;
-    [SerializeField] private float flySpeed = 7f;
+    [SerializeField] private float glideGravity    = -2f;
+    [SerializeField] private float flySpeed        = 7f;
+    [SerializeField] private float wallClimbSpeed  = 5f;
 
     private CharacterController controller;
     private float verticalVelocity;
     private bool usedDoubleJump;
     private bool isGliding;
     private bool isFlying;
+    private bool isWallClimbing;
+    private CollisionFlags lastCollisionFlags;
 
     // Camera state
     private float camYaw;
@@ -103,6 +107,7 @@ public class PlayerDogController : MonoBehaviour
         // Sync powerup flags from GameState
         if (GameState.HasFlag("has_sprint"))      hasSprint     = true;
         if (GameState.HasFlag("has_double_jump")) hasDoubleJump = true;
+        if (GameState.HasFlag("has_wall_climb"))  hasWallClimb  = true;
 
         bool grounded = controller.isGrounded;
 
@@ -139,12 +144,17 @@ public class PlayerDogController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, turnSpeed * Time.deltaTime);
         }
 
+        // Wall climb: hold Space while touching a side wall with movement input
+        bool touchingWall = (lastCollisionFlags & CollisionFlags.Sides) != 0;
+        isWallClimbing = hasWallClimb && !grounded && GetJumpHeld()
+                         && touchingWall && rawInput.sqrMagnitude > 0.01f;
+
         HandleVertical(grounded, moveDir);
 
         float currentSpeed = isFlying ? flySpeed : (hasSprint && GetSprintHeld() ? sprintSpeed : moveSpeed);
         var motion = moveDir * currentSpeed;
-        motion.y = verticalVelocity;
-        controller.Move(motion * Time.deltaTime);
+        motion.y = isWallClimbing ? wallClimbSpeed : verticalVelocity;
+        lastCollisionFlags = controller.Move(motion * Time.deltaTime);
     }
 
     private void LateUpdate()
@@ -186,6 +196,8 @@ public class PlayerDogController : MonoBehaviour
             isGliding = true;
         else if (!GetJumpHeld())
             isGliding = false;
+
+        if (isWallClimbing) { verticalVelocity = 0f; return; }
 
         float activeGravity = isGliding ? glideGravity : gravity;
         verticalVelocity += activeGravity * Time.deltaTime;

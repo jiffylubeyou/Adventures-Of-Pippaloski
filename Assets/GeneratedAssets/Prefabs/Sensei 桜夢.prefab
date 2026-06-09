@@ -891,6 +891,12 @@ MonoBehaviour:
     grantsFlag: has_double_jump
     oneTimePurchase: 1
     purchased: 0
+  - itemName: Wall Climb
+    description: Can scale walls holding spacebar
+    price: 500
+    grantsFlag: 
+    oneTimePurchase: 1
+    purchased: 0
 --- !u!1 &2557073165785305664
 GameObject:
   m_ObjectHideFlags: 0

@@ -852,6 +852,20 @@ MonoBehaviour:
     grantsBoatAccess: 0
     opensShop: 1
     followUpLines: []
+  - playerPrompt: Why are you T posing?
+    npcResponse: The budget for this game is 0$
+    closesDialogue: 0
+    oneTimeOnly: 0
+    startsLocked: 0
+    unlocksLineIndices: 
+    locksLineIndices: 
+    requiredFlags: []
+    forbiddenFlags: []
+    clearsFlags: []
+    setsFlags: []
+    grantsBoatAccess: 0
+    opensShop: 0
+    followUpLines: []
   - playerPrompt: Goodbye.
     npcResponse: Alrighty then
     closesDialogue: 1
@@ -885,16 +899,16 @@ MonoBehaviour:
     grantsFlag: has_sprint
     oneTimePurchase: 1
     purchased: 0
-  - itemName: Double Jump
-    description: It is what it sounds like
-    price: 100
-    grantsFlag: has_double_jump
-    oneTimePurchase: 1
-    purchased: 0
   - itemName: Wall Climb
     description: Can scale walls holding spacebar
-    price: 500
-    grantsFlag: 
+    price: 100
+    grantsFlag: has_wall_climb
+    oneTimePurchase: 1
+    purchased: 0
+  - itemName: Double Jump
+    description: It is what it sounds like
+    price: 250
+    grantsFlag: has_double_jump
     oneTimePurchase: 1
     purchased: 0
 --- !u!1 &2557073165785305664

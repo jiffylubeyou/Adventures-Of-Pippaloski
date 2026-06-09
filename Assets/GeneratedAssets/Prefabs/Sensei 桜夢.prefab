@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 7169063846065633992}
   - component: {fileID: 2553126208967679412}
   m_Layer: 0
-  m_Name: "Sensei \u685C"
+  m_Name: "Sensei \u685C\u5922"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

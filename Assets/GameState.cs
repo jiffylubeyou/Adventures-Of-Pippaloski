@@ -10,4 +10,15 @@ public static class GameState
 
     public const string HasBone       = "has_bone";
     public const string QuestComplete = "quest_complete";
+
+    // ---- Coins ----
+    public static int Coins { get; private set; } = 0;
+
+    public static void AddCoins(int amount)    => Coins += amount;
+    public static bool SpendCoins(int amount)
+    {
+        if (Coins < amount) return false;
+        Coins -= amount;
+        return true;
+    }
 }

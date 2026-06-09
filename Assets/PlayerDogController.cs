@@ -114,6 +114,11 @@ public class PlayerDogController : MonoBehaviour
 
         RotateCamera();
 
+#if UNITY_EDITOR
+        if (GetCheatCoinsPressed())
+            GameState.AddCoins(50);
+#endif
+
         if (!MotorEnabled) return;
 
         var rawInput = GetMovementInput();
@@ -479,6 +484,18 @@ public class PlayerDogController : MonoBehaviour
         return Keyboard.current != null && Keyboard.current.leftShiftKey.isPressed;
 #elif ENABLE_LEGACY_INPUT_MANAGER
         return Input.GetKey(KeyCode.LeftShift);
+#else
+        return false;
+#endif
+    }
+
+    private static bool GetCheatCoinsPressed()
+    {
+#if ENABLE_INPUT_SYSTEM
+        var kb = Keyboard.current;
+        return kb != null && kb.leftShiftKey.isPressed && kb.cKey.wasPressedThisFrame;
+#elif ENABLE_LEGACY_INPUT_MANAGER
+        return Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.C);
 #else
         return false;
 #endif

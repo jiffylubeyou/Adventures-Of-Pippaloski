@@ -10,6 +10,7 @@ public static class GameState
 
     public const string HasBone       = "has_bone";
     public const string QuestComplete = "quest_complete";
+    public const string ShopUnlocked  = "shop_unlocked";
 
     // ---- Coins ----
     public static int Coins { get; private set; } = 0;

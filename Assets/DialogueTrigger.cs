@@ -101,7 +101,17 @@ public class DialogueTrigger : MonoBehaviour
         if (chosen.grantsBoatAccess)
             GameState.SetFlag(GameState.QuestComplete);
 
-        if (chosen.closesDialogue)
+        if (chosen.opensShop)
+        {
+            GameState.SetFlag(GameState.ShopUnlocked);
+            var shop = GetComponent<SenseiShop>();
+            ui.ShowResponse(npcName, chosen.npcResponse, () =>
+            {
+                EndDialogue();
+                shop?.OpenShop();
+            });
+        }
+        else if (chosen.closesDialogue)
         {
             ui.ShowResponse(npcName, chosen.npcResponse, EndDialogue);
         }
@@ -202,6 +212,8 @@ public class DialogueLine
     public string[] setsFlags;
     // Tick this on Chief's boat-grant line to unlock the raft
     public bool grantsBoatAccess;
+    // Tick this on the line whose response should open the shop afterward
+    public bool opensShop;
     // If filled, these options appear after the NPC responds instead of going back to the root menu
     public DialogueLine[] followUpLines;
 }

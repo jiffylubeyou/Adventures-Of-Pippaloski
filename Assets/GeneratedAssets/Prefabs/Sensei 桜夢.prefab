@@ -806,6 +806,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
+    opensShop: 0
     followUpLines:
     - playerPrompt: That sounds cool, teach me your ways
       npcResponse: Yes of course, but always for a price. The league of shadows isn't
@@ -813,16 +814,18 @@ MonoBehaviour:
       closesDialogue: 0
       oneTimeOnly: 1
       startsLocked: 0
-      unlocksLineIndices: 
-      locksLineIndices: 
+      unlocksLineIndices: 01000000
+      locksLineIndices: 00000000
       requiredFlags: []
       forbiddenFlags: []
       clearsFlags: []
       setsFlags: []
       grantsBoatAccess: 0
+      opensShop: 1
       followUpLines: []
     - playerPrompt: That honestly sounds kinda dumb
-      npcResponse: Mangy little mutt. Your dog farts stink by the way
+      npcResponse: Mangy little mutt, I'm a cat guy anways. Oh and your dog farts
+        stink
       closesDialogue: 1
       oneTimeOnly: 0
       startsLocked: 0
@@ -833,7 +836,22 @@ MonoBehaviour:
       clearsFlags: []
       setsFlags: []
       grantsBoatAccess: 0
+      opensShop: 0
       followUpLines: []
+  - playerPrompt: Sensei, Teach me the way of the ninja
+    npcResponse: Yes of course my young padawan
+    closesDialogue: 1
+    oneTimeOnly: 0
+    startsLocked: 1
+    unlocksLineIndices: 
+    locksLineIndices: 
+    requiredFlags: []
+    forbiddenFlags: []
+    clearsFlags: []
+    setsFlags: []
+    grantsBoatAccess: 0
+    opensShop: 1
+    followUpLines: []
   - playerPrompt: Goodbye.
     npcResponse: Alrighty then
     closesDialogue: 1
@@ -846,6 +864,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
+    opensShop: 0
     followUpLines: []
 --- !u!114 &1881650900999384865
 MonoBehaviour:
@@ -859,7 +878,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40ef19274e57c3d4f81a10c578ef42c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SenseiShop
-  items: []
+  items:
+  - itemName: Double Jump
+    description: What it sounds like
+    price: 100
+    grantsFlag: has_double_jump
+    oneTimePurchase: 1
+    purchased: 0
 --- !u!1 &2557073165785305664
 GameObject:
   m_ObjectHideFlags: 0

@@ -10714,46 +10714,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1583395879}
   m_SourcePrefab: {fileID: 100100000, guid: 16ecce9cc728dbf4284b95589f19b796, type: 3}
---- !u!1 &1521034986 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1502754888308323478, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-  m_PrefabInstance: {fileID: 7447489284965195848}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1521034989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1521034986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40ef19274e57c3d4f81a10c578ef42c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SenseiShop
-  shopTitle: Spirit of the Ancients
-  items:
-  - itemName: Ancient Obelisk
-    description: The ability to teleport to other purchased obelisks
-    price: 1000
-    grantsFlag: fasttravel_chiefisland
-    oneTimePurchase: 1
-    purchased: 0
---- !u!114 &1521034990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1521034986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b11034ac0740774fa22ad6825d14c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObeliskManager
-  obeliskId: chiefisland
-  displayName: Chief's Island
-  arrivalPoint: {fileID: 0}
 --- !u!4 &1522912970 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3637134996410565414, guid: 9c6178fe943216540b276b975dafae16, type: 3}
@@ -14617,6 +14577,83 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b995a96a7ca36d04b851e46870b5aadf, type: 3}
+--- !u!1001 &2051711948
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 809656328607756802, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: items.Array.data[0].grantsFlag
+      value: fasttravel_chiefisland1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2439147762101047408, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_Name
+      value: Obelisk (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: 'lines.Array.data[1].requiredFlags.Array.data[0]'
+      value: fasttravel_chiefisland1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: 'lines.Array.data[0].forbiddenFlags.Array.data[0]'
+      value: fasttravel_chiefisland1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114124749345573904, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: obeliskId
+      value: chiefisland1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114124749345573904, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: displayName
+      value: Chief's Island1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -151
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 13.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 46.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
 --- !u!4 &2057891355 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5707813131339434805, guid: b995a96a7ca36d04b851e46870b5aadf, type: 3}
@@ -15453,66 +15490,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obelisk
       objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: oneShot
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[0].opensShop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[0].npcResponse
-      value: ...
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[1].npcResponse
-      value: Select a location to travel to
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[2].npcResponse
-      value: ... May the sands guide your paws
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[0].playerPrompt
-      value: Offer A Sacrifice
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[1].playerPrompt
-      value: Teleport
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[2].playerPrompt
-      value: Leave
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[2].closesDialogue
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[1].opensTravelMenu
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[1].requiredFlags.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: lines.Array.data[0].forbiddenFlags.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: 'lines.Array.data[1].requiredFlags.Array.data[0]'
-      value: fasttravel_chiefisland
-      objectReference: {fileID: 0}
-    - target: {fileID: 2763418830738415440, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      propertyPath: 'lines.Array.data[0].forbiddenFlags.Array.data[0]'
-      value: fasttravel_chiefisland
-      objectReference: {fileID: 0}
     - target: {fileID: 6571723515610016310, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
       propertyPath: m_LocalPosition.x
       value: -151
@@ -15556,13 +15533,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1502754888308323478, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1521034990}
-    - targetCorrespondingSourceObject: {fileID: 1502754888308323478, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1521034989}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac2216555a85d1e49a91587c3b6dc333, type: 3}
 --- !u!1001 &8469882831485836873
 PrefabInstance:
@@ -15703,3 +15674,4 @@ SceneRoots:
   - {fileID: 29004861}
   - {fileID: 146385692}
   - {fileID: 7447489284965195848}
+  - {fileID: 2051711948}

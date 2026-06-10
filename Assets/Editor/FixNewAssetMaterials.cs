@@ -25,6 +25,8 @@ public static class FixNewAssetMaterials
         count += FixFolder("Assets/Metal_Grids_Textures",        urpLit);
         count += FixFolder("Assets/Building FastFood Drinks",    urpLit);
         count += FixFolder("Assets/CGM_EgyptPack",             urpLit);
+        count += FixFolder("Assets/SimpleNaturePack",          urpLit);
+        count += FixFolder("Assets/Nicrom",                   urpLit, allowCustomShaders: true);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -33,7 +35,7 @@ public static class FixNewAssetMaterials
             $"Done! Converted {count} material(s) to URP Lit.", "Great");
     }
 
-    private static int FixFolder(string folderPath, Shader urpLit)
+    private static int FixFolder(string folderPath, Shader urpLit, bool allowCustomShaders = false)
     {
         int count = 0;
         string[] guids = AssetDatabase.FindAssets("t:Material", new[] { folderPath });
@@ -46,13 +48,19 @@ public static class FixNewAssetMaterials
 
             string shaderName = mat.shader != null ? mat.shader.name : "";
 
-            // Only touch Built-in shaders
-            if (!shaderName.StartsWith("Standard") &&
-                !shaderName.StartsWith("Legacy") &&
-                !shaderName.StartsWith("Mobile") &&
-                shaderName != "Diffuse" &&
-                shaderName != "Specular")
-                continue;
+            // Skip materials already on URP
+            if (shaderName.StartsWith("Universal Render Pipeline")) continue;
+
+            // For normal folders: only touch known Built-in shaders.
+            // For allowCustomShaders folders: also convert any non-URP shader
+            // (e.g. custom Amplify shaders that have no URP equivalent).
+            bool isBuiltIn = shaderName.StartsWith("Standard") ||
+                             shaderName.StartsWith("Legacy")   ||
+                             shaderName.StartsWith("Mobile")   ||
+                             shaderName == "Diffuse"           ||
+                             shaderName == "Specular";
+
+            if (!isBuiltIn && !allowCustomShaders) continue;
 
             // Cache Built-in values before swapping shader
             Color   baseColor       = mat.HasProperty("_Color")            ? mat.GetColor("_Color")               : Color.white;

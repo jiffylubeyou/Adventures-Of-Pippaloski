@@ -27,6 +27,8 @@ public static class FixNewAssetMaterials
         count += FixFolder("Assets/CGM_EgyptPack",             urpLit);
         count += FixFolder("Assets/SimpleNaturePack",          urpLit);
         count += FixFolder("Assets/Nicrom",                   urpLit, allowCustomShaders: true);
+        count += FixFolder("Assets/Stylized_Pirate_Ship",    urpLit);
+        count += FixFolder("Assets/MedievalShip",            urpLit);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -65,6 +67,8 @@ public static class FixNewAssetMaterials
             // Cache Built-in values before swapping shader
             Color   baseColor       = mat.HasProperty("_Color")            ? mat.GetColor("_Color")               : Color.white;
             Texture albedo          = mat.HasProperty("_MainTex")          ? mat.GetTexture("_MainTex")            : null;
+            Vector2 albedoScale     = mat.HasProperty("_MainTex")          ? mat.GetTextureScale("_MainTex")       : Vector2.one;
+            Vector2 albedoOffset    = mat.HasProperty("_MainTex")          ? mat.GetTextureOffset("_MainTex")      : Vector2.zero;
             Texture normalMap       = mat.HasProperty("_BumpMap")          ? mat.GetTexture("_BumpMap")            : null;
             float   normalScale     = mat.HasProperty("_BumpScale")        ? mat.GetFloat("_BumpScale")            : 1f;
             Texture occlusion       = mat.HasProperty("_OcclusionMap")     ? mat.GetTexture("_OcclusionMap")       : null;
@@ -83,7 +87,12 @@ public static class FixNewAssetMaterials
 
             // Map Built-in → URP Lit properties
             mat.SetColor("_BaseColor", baseColor);
-            if (albedo != null) mat.SetTexture("_BaseMap", albedo);
+            if (albedo != null)
+            {
+                mat.SetTexture("_BaseMap", albedo);
+                mat.SetTextureScale("_BaseMap",  albedoScale);
+                mat.SetTextureOffset("_BaseMap", albedoOffset);
+            }
             if (normalMap != null)
             {
                 mat.SetTexture("_BumpMap",  normalMap);

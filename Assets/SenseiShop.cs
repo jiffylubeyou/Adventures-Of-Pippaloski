@@ -32,6 +32,7 @@ public class SenseiShop : MonoBehaviour
 
     public void OpenShop()
     {
+        Debug.Log("[SenseiShop] OpenShop called on " + gameObject.name);
         if (!shopBuilt) BuildShopUI();
         RefreshItems();
         canvasObj.SetActive(true);

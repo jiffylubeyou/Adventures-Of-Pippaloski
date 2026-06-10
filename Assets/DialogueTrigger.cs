@@ -77,6 +77,8 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnOptionChosen(DialogueLine chosen)
     {
+        Debug.Log($"[DialogueTrigger] Option chosen: '{chosen.playerPrompt}' | opensShop={chosen.opensShop} | opensTravelMenu={chosen.opensTravelMenu} | startsWitchLunchQuest={chosen.startsWitchLunchQuest} | closesDialogue={chosen.closesDialogue}");
+
         // Consume one-time lines and process locks/unlocks
         int chosenIndex = System.Array.IndexOf(lines, chosen);
         if (chosen.oneTimeOnly && chosenIndex >= 0)

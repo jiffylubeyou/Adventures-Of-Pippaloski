@@ -113,6 +113,8 @@ public class DialogueZone : MonoBehaviour
 
     private void OnOptionChosen(DialogueLine chosen)
     {
+        Debug.Log($"[DialogueZone] Option chosen: '{chosen.playerPrompt}' | opensShop={chosen.opensShop} | opensTravelMenu={chosen.opensTravelMenu} | closesDialogue={chosen.closesDialogue}");
+
         int idx = System.Array.IndexOf(lines, chosen);
         if (chosen.oneTimeOnly && idx >= 0) consumedLines.Add(idx);
 
@@ -125,7 +127,40 @@ public class DialogueZone : MonoBehaviour
         if (chosen.setsFlags != null)
             foreach (var f in chosen.setsFlags) GameState.SetFlag(f);
 
-        if (chosen.closesDialogue)
+        if (chosen.opensShop)
+        {
+            var shop = GetComponent<SenseiShop>()
+                    ?? GetComponentInChildren<SenseiShop>()
+                    ?? GetComponentInParent<SenseiShop>()
+                    ?? FindObjectOfType<SenseiShop>();
+            if (shop == null)
+            {
+                Debug.LogWarning("[DialogueZone] opensShop ticked but no SenseiShop found!");
+                return;
+            }
+            void OpenTheShop() { CloseDialogue(); shop.OpenShop(); }
+            if (!string.IsNullOrWhiteSpace(chosen.npcResponse))
+                ui.ShowResponse(speakerName, chosen.npcResponse, OpenTheShop);
+            else
+                OpenTheShop();
+        }
+        else if (chosen.opensTravelMenu)
+        {
+            var obelisk = GetComponent<ObeliskManager>()
+                       ?? GetComponentInParent<ObeliskManager>()
+                       ?? FindObjectOfType<ObeliskManager>();
+            if (obelisk == null)
+            {
+                Debug.LogWarning("[DialogueZone] opensTravelMenu ticked but no ObeliskManager found!");
+                return;
+            }
+            void OpenTravel() { CloseDialogue(); obelisk.OpenTravelMenu(); }
+            if (!string.IsNullOrWhiteSpace(chosen.npcResponse))
+                ui.ShowResponse(speakerName, chosen.npcResponse, OpenTravel);
+            else
+                OpenTravel();
+        }
+        else if (chosen.closesDialogue)
         {
             ui.ShowResponse(speakerName, chosen.npcResponse, CloseDialogue);
         }

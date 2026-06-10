@@ -36,6 +36,25 @@ public class RaftController : MonoBehaviour
     private Text promptText;
     private Text noKeysText;
 
+    // Queried by PirateShipAI / RaftHealth
+    public static RaftController Instance { get; private set; }
+    public bool PlayerAboard => playerAboard;
+    public float WaterLevel  => waterLevel;
+
+    // Set by RaftHealth while the raft is sinking — freezes driving and the
+    // water-surface snap so the sink animation can move the raft freely.
+    [HideInInspector] public bool ControlsLocked = false;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     private void Start()
     {
         var playerObj = GameObject.Find("Pippaloski");
@@ -54,6 +73,12 @@ public class RaftController : MonoBehaviour
     private void Update()
     {
         if (playerTransform == null) return;
+
+        if (ControlsLocked)
+        {
+            promptText.gameObject.SetActive(false);
+            return;
+        }
 
         float dist = Vector3.Distance(transform.position, playerTransform.position);
         bool inRange = dist <= boardRange;

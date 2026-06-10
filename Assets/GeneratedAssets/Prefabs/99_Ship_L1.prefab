@@ -737,6 +737,8 @@ GameObject:
   - component: {fileID: 4043748427800933935}
   - component: {fileID: 4691701743885687432}
   - component: {fileID: 1587886854423575886}
+  - component: {fileID: 938223656176754673}
+  - component: {fileID: 3738589612690714140}
   m_Layer: 0
   m_Name: 99_Ship_L1
   m_TagString: Untagged
@@ -821,6 +823,62 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &938223656176754673
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7441027418703877486}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.8844519, y: 2.4428315, z: 7.019181}
+  m_Center: {x: 0, y: 1.2809012, z: 0.404203}
+--- !u!114 &3738589612690714140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7441027418703877486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf37370c76b3d9e429087e11597280ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PirateShipAI
+  waterLevel: 4
+  hullYOffset: -1.0227498
+  bobAmplitude: 0.12
+  bobFrequency: 0.5
+  rollAmplitude: 1.5
+  patrolSpeed: 8
+  attackSpeed: 22
+  turnSpeed: 35
+  patrolRadius: 90
+  waypointTolerance: 10
+  waypointTimeout: 18
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  probeDistance: 6
+  aggroRange: 130
+  fireRange: 80
+  broadsideDistance: 45
+  fireCooldown: 4.5
+  volleySize: 2
+  volleyInterval: 0.3
+  ballDamage: 15
+  aimInaccuracy: 5
 --- !u!1 &9114582262125322843
 GameObject:
   m_ObjectHideFlags: 0

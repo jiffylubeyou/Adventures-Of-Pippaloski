@@ -8108,6 +8108,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3637134996410565414, guid: 9c6178fe943216540b276b975dafae16, type: 3}
   m_PrefabInstance: {fileID: 1095048317}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1049532757
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -86.872574
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.97725
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -218.00874
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.46802425
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8837156
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7441027418703877486, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_Name
+      value: Pirate Ship 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
 --- !u!4 &1051307124 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5707813131339434805, guid: b995a96a7ca36d04b851e46870b5aadf, type: 3}
@@ -13833,10 +13890,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Low Poly Raft
       objectReference: {fileID: 0}
-    - target: {fileID: 7043691097078341387, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14388,6 +14441,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5707813131339434805, guid: b995a96a7ca36d04b851e46870b5aadf, type: 3}
   m_PrefabInstance: {fileID: 249187432}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1895802158
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -85.18368
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.97725
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -301.35864
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9591937
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.28274977
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4043748427800933935, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7441027418703877486, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
+      propertyPath: m_Name
+      value: Pirate Ship 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8cb89f7092d7c4644a0855b2d3bf69d6, type: 3}
 --- !u!1001 &1901678160
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17110,3 +17220,5 @@ SceneRoots:
   - {fileID: 1568066195}
   - {fileID: 985164442}
   - {fileID: 429392120}
+  - {fileID: 1895802158}
+  - {fileID: 1049532757}

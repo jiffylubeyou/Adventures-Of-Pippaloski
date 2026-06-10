@@ -914,6 +914,7 @@ GameObject:
   m_Component:
   - component: {fileID: 369566197773593865}
   - component: {fileID: 7043691097078341387}
+  - component: {fileID: 5385743353428139366}
   m_Layer: 0
   m_Name: Low Poly Raft
   m_TagString: Untagged
@@ -972,6 +973,28 @@ MonoBehaviour:
   raftSpeed: 50
   raftTurnSpeed: 90
   waterLevel: 4
+  hullHalfExtents: {x: 1.5, y: 8, z: 0.6}
+  probeDistance: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  ControlsLocked: 0
+--- !u!114 &5385743353428139366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4496900895665180722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10711b5f6bafd1c4d837d7a687c89184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RaftHealth
+  maxHealth: 100
+  rewindSeconds: 10
+  sinkDuration: 3
+  sinkDepth: 3
 --- !u!1 &5022218137656448989
 GameObject:
   m_ObjectHideFlags: 0

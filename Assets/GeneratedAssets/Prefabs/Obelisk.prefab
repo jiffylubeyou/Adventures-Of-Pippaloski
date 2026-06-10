@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2166894322738117570}
   - component: {fileID: 2763418830738415440}
+  - component: {fileID: 4114124749345573904}
+  - component: {fileID: 809656328607756802}
   m_Layer: 0
   m_Name: Obelisk Voice
   m_TagString: Untagged
@@ -45,27 +47,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueZone
   triggerRadius: 4
-  oneShot: 1
+  oneShot: 0
   speakerName: Spirit of the Ancients
   greeting: Welcome...
   lines:
-  - playerPrompt: What is this place?
-    npcResponse: This obelisk has stood for a thousand years, watching over the land.
+  - playerPrompt: Offer A Sacrifice
+    npcResponse: ...
     closesDialogue: 0
     oneTimeOnly: 0
     startsLocked: 0
     unlocksLineIndices: 
     locksLineIndices: 
     requiredFlags: []
+    forbiddenFlags:
+    - fasttravel_chiefisland
+    clearsFlags: []
+    setsFlags: []
+    grantsBoatAccess: 0
+    opensShop: 1
+    startsWitchLunchQuest: 0
+    opensTravelMenu: 0
+    followUpLines: []
+  - playerPrompt: Teleport
+    npcResponse: Select a location to travel to
+    closesDialogue: 1
+    oneTimeOnly: 0
+    startsLocked: 0
+    unlocksLineIndices: 
+    locksLineIndices: 
+    requiredFlags:
+    - fasttravel_chiefisland
     forbiddenFlags: []
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
     opensShop: 0
     startsWitchLunchQuest: 0
+    opensTravelMenu: 1
     followUpLines: []
-  - playerPrompt: I'll be on my way.
-    npcResponse: May the sands guide your paws.
+  - playerPrompt: Leave
+    npcResponse: ... May the sands guide your paws
     closesDialogue: 1
     oneTimeOnly: 0
     startsLocked: 0
@@ -78,7 +99,43 @@ MonoBehaviour:
     grantsBoatAccess: 0
     opensShop: 0
     startsWitchLunchQuest: 0
+    opensTravelMenu: 0
     followUpLines: []
+--- !u!114 &4114124749345573904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502754888308323478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b11034ac0740774fa22ad6825d14c6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObeliskManager
+  obeliskId: chiefisland
+  displayName: Chief's Island
+  arrivalPoint: {fileID: 0}
+--- !u!114 &809656328607756802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502754888308323478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40ef19274e57c3d4f81a10c578ef42c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SenseiShop
+  shopTitle: Spirit of the Ancients
+  items:
+  - itemName: Ancient Obelisk
+    description: The ability to teleport to other purchased obelisks
+    price: 1000
+    grantsFlag: fasttravel_chiefisland
+    oneTimePurchase: 1
+    purchased: 0
 --- !u!1 &2439147762101047408
 GameObject:
   m_ObjectHideFlags: 0

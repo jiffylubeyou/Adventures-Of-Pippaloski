@@ -16,6 +16,10 @@ public class SenseiShop : MonoBehaviour
         [HideInInspector] public bool purchased = false;
     }
 
+    [Header("Shop Identity")]
+    [Tooltip("Title shown at the top of the shop window.")]
+    [SerializeField] private string shopTitle = "Sensei's Shop";
+
     [Header("Shop Items")]
     [SerializeField] private List<ShopItem> items = new List<ShopItem>();
 
@@ -44,7 +48,7 @@ public class SenseiShop : MonoBehaviour
         shopBuilt = true;
 
         // Canvas
-        canvasObj = new GameObject("Sensei Shop Canvas");
+        canvasObj = new GameObject(shopTitle + " Canvas");
         var canvas = canvasObj.AddComponent<Canvas>();
         canvas.renderMode   = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = 30;
@@ -83,7 +87,7 @@ public class SenseiShop : MonoBehaviour
         headerR.offsetMax        = new Vector2(0f, 0f);
 
         var titleT = header.AddComponent<Text>();
-        titleT.text      = "Sensei's Shop";
+        titleT.text      = shopTitle;
         titleT.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         titleT.fontSize  = 28;
         titleT.fontStyle = FontStyle.Bold;

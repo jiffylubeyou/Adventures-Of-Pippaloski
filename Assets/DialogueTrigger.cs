@@ -111,6 +111,19 @@ public class DialogueTrigger : MonoBehaviour
                 shop?.OpenShop();
             });
         }
+        else if (chosen.opensTravelMenu)
+        {
+            ui.ShowResponse(npcName, chosen.npcResponse, () =>
+            {
+                EndDialogue();
+                var obelisk = GetComponent<ObeliskManager>()
+                           ?? FindObjectOfType<ObeliskManager>();
+                if (obelisk != null)
+                    obelisk.OpenTravelMenu();
+                else
+                    Debug.LogWarning("[DialogueTrigger] opensTravelMenu ticked but no ObeliskManager found!");
+            });
+        }
         else if (chosen.startsWitchLunchQuest)
         {
             ui.ShowResponse(npcName, chosen.npcResponse, () =>
@@ -235,6 +248,8 @@ public class DialogueLine
     public bool opensShop;
     // Tick this on the witch's "be quick" line to start the lunch delivery quest
     public bool startsWitchLunchQuest;
+    // Tick this on an obelisk dialogue line to open the fast-travel destination picker
+    public bool opensTravelMenu;
     // If filled, these options appear after the NPC responds instead of going back to the root menu
     public DialogueLine[] followUpLines;
 }

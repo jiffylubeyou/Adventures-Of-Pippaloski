@@ -104,12 +104,22 @@ public class DialogueTrigger : MonoBehaviour
         if (chosen.opensShop)
         {
             GameState.SetFlag(GameState.ShopUnlocked);
-            var shop = GetComponent<SenseiShop>();
-            ui.ShowResponse(npcName, chosen.npcResponse, () =>
+            var shop = GetComponent<SenseiShop>()
+                    ?? GetComponentInChildren<SenseiShop>()
+                    ?? GetComponentInParent<SenseiShop>()
+                    ?? FindObjectOfType<SenseiShop>();
+            if (shop == null)
             {
-                EndDialogue();
-                shop?.OpenShop();
-            });
+                Debug.LogWarning("[DialogueTrigger] opensShop is ticked but no SenseiShop component found in scene!");
+                return;
+            }
+            void OpenTheShop() { EndDialogue(); shop.OpenShop(); }
+            // If there's a response line, show it first then open on Continue.
+            // If the response is blank, open the shop immediately — no empty Continue screen.
+            if (!string.IsNullOrWhiteSpace(chosen.npcResponse))
+                ui.ShowResponse(npcName, chosen.npcResponse, OpenTheShop);
+            else
+                OpenTheShop();
         }
         else if (chosen.opensTravelMenu)
         {

@@ -103,7 +103,8 @@ public class DialogueUI : MonoBehaviour
     public void ShowPrompt(string message) { /* now driven by RequestPrompt */ }
     public void HidePrompt()              { /* now driven by ReleasePrompt  */ }
 
-    public void OpenDialogue(string speaker, string body, DialogueLine[] options, Action<DialogueLine> onChosen)
+    public void OpenDialogue(string speaker, string body, DialogueLine[] options, Action<DialogueLine> onChosen,
+        Action onEmptyContinue = null)
     {
         panelObj.SetActive(true);
         speakerText.text = speaker;
@@ -116,6 +117,14 @@ public class DialogueUI : MonoBehaviour
         {
             var line_captured = line;
             AddOptionButton(line.playerPrompt, () => onChosen(line_captured));
+        }
+
+        // No response options — show a Continue button so the player isn't
+        // trapped. Used by zones that just announce something.
+        if (options == null || options.Length == 0)
+        {
+            continueAction = onEmptyContinue ?? CloseDialogue;
+            continueButtonObj.SetActive(true);
         }
 
         // Unlock cursor and disable movement while talking

@@ -72,7 +72,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         talking = true;
         ui.ReleasePrompt(this);
-        ui.OpenDialogue(npcName, greeting, GetAvailableLines(), OnOptionChosen);
+        ui.OpenDialogue(npcName, greeting, GetAvailableLines(), OnOptionChosen, EndDialogue);
     }
 
     private void OnOptionChosen(DialogueLine chosen)
@@ -162,12 +162,12 @@ public class DialogueTrigger : MonoBehaviour
         else if (chosen.followUpLines != null && chosen.followUpLines.Length > 0)
         {
             ui.ShowResponse(npcName, chosen.npcResponse, () =>
-                ui.OpenDialogue(npcName, "...", chosen.followUpLines, OnOptionChosen));
+                ui.OpenDialogue(npcName, "...", chosen.followUpLines, OnOptionChosen, EndDialogue));
         }
         else
         {
             ui.ShowResponse(npcName, chosen.npcResponse, () =>
-                ui.OpenDialogue(npcName, "Anything else?", GetAvailableLines(), OnOptionChosen));
+                ui.OpenDialogue(npcName, "Anything else?", GetAvailableLines(), OnOptionChosen, EndDialogue));
         }
     }
 

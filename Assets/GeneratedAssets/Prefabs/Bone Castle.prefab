@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3496b94b7f57c7f4d8b5a3ec212f83e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueZone
-  triggerRadius: 20
+  triggerRadius: 30
   oneShot: 0
   speakerName: Bone Keeper
   greeting: ... The bone you seek lies in the upper chambers of this sanctum

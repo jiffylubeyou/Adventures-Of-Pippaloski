@@ -100,7 +100,7 @@ public class DialogueZone : MonoBehaviour
         if (dialogueOpen) return;
         triggered    = true;
         dialogueOpen = true;
-        ui.OpenDialogue(speakerName, greeting, GetAvailableLines(), OnOptionChosen);
+        ui.OpenDialogue(speakerName, greeting, GetAvailableLines(), OnOptionChosen, CloseDialogue);
     }
 
     private void CloseDialogue()
@@ -167,12 +167,12 @@ public class DialogueZone : MonoBehaviour
         else if (chosen.followUpLines != null && chosen.followUpLines.Length > 0)
         {
             ui.ShowResponse(speakerName, chosen.npcResponse, () =>
-                ui.OpenDialogue(speakerName, "...", chosen.followUpLines, OnOptionChosen));
+                ui.OpenDialogue(speakerName, "...", chosen.followUpLines, OnOptionChosen, CloseDialogue));
         }
         else
         {
             ui.ShowResponse(speakerName, chosen.npcResponse, () =>
-                ui.OpenDialogue(speakerName, "...", GetAvailableLines(), OnOptionChosen));
+                ui.OpenDialogue(speakerName, "...", GetAvailableLines(), OnOptionChosen, CloseDialogue));
         }
     }
 

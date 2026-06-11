@@ -178,15 +178,15 @@ public class RaftHealth : MonoBehaviour
         damageFlash.color = Color.clear;
         damageFlash.raycastTarget = false;
 
-        // Bar container — bottom centre, above the raft prompt
+        // Bar container — top-right corner, below the bone/burger icons
         barRoot = new GameObject("Raft Health Bar");
         barRoot.transform.SetParent(canvas.transform, false);
         var rootRect = barRoot.AddComponent<RectTransform>();
-        rootRect.anchorMin = new Vector2(0.5f, 0f);
-        rootRect.anchorMax = new Vector2(0.5f, 0f);
-        rootRect.pivot     = new Vector2(0.5f, 0f);
+        rootRect.anchorMin = new Vector2(1f, 1f);
+        rootRect.anchorMax = new Vector2(1f, 1f);
+        rootRect.pivot     = new Vector2(1f, 1f);
         rootRect.sizeDelta = new Vector2(BarWidth + 8f, 30f);
-        rootRect.anchoredPosition = new Vector2(0f, 110f);
+        rootRect.anchoredPosition = new Vector2(-20f, -110f);
 
         // Background / border
         var bg = barRoot.AddComponent<Image>();

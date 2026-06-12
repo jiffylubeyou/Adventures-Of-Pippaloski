@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3694396520422276086}
   - component: {fileID: 540427973128705436}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Boat Purchase Island
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,6 +78,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3694396520422276086}
     m_Modifications:
+    - target: {fileID: 1378377318100109369, guid: 3f875203e6580d247a02b6bd3ac8a366, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3587275804959606944, guid: 3f875203e6580d247a02b6bd3ac8a366, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -125,6 +129,10 @@ PrefabInstance:
     - target: {fileID: 4216285119629546010, guid: 3f875203e6580d247a02b6bd3ac8a366, type: 3}
       propertyPath: m_Name
       value: 01_House_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4216285119629546010, guid: 3f875203e6580d247a02b6bd3ac8a366, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -208,6 +216,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: 00_Island_1
       objectReference: {fileID: 0}
+    - target: {fileID: 19128258992812583, guid: f707191a539c0ae4989d856bea091177, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 513440791783342489, guid: f707191a539c0ae4989d856bea091177, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 794926704442239133, guid: f707191a539c0ae4989d856bea091177, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -251,6 +267,18 @@ PrefabInstance:
     - target: {fileID: 794926704442239133, guid: f707191a539c0ae4989d856bea091177, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839134628468518160, guid: f707191a539c0ae4989d856bea091177, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2602612466223174682, guid: f707191a539c0ae4989d856bea091177, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4210140381663839494, guid: f707191a539c0ae4989d856bea091177, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -424,6 +452,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 02_Market_Barrel_Stack_3
       objectReference: {fileID: 0}
+    - target: {fileID: 2509669451952392392, guid: 4ab2a9173bca1d748b8bef2716372344, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2999383871033037426, guid: 4ab2a9173bca1d748b8bef2716372344, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -564,6 +596,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 02_Market_Banner_Barrels (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2979532902869302508, guid: ff844aaa1271ce641a549a498365d900, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -615,6 +651,10 @@ PrefabInstance:
     - target: {fileID: 3837125433143377547, guid: d51ff2188494a8e4587a4ba203ba03fe, type: 3}
       propertyPath: m_Name
       value: 02_Market_Barrel_Single_Closed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837125433143377547, guid: d51ff2188494a8e4587a4ba203ba03fe, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4470919861090968625, guid: d51ff2188494a8e4587a4ba203ba03fe, type: 3}
       propertyPath: m_RootOrder
@@ -711,6 +751,10 @@ PrefabInstance:
     - target: {fileID: 2422425958790461274, guid: 44f6a110ca225fb4bb4436e90d0b6314, type: 3}
       propertyPath: m_Name
       value: 02_Market_Crate_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422425958790461274, guid: 44f6a110ca225fb4bb4436e90d0b6314, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3086653768546364896, guid: 44f6a110ca225fb4bb4436e90d0b6314, type: 3}
       propertyPath: m_RootOrder
@@ -852,6 +896,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 02_Market_Crate_3
       objectReference: {fileID: 0}
+    - target: {fileID: 2042152106684181948, guid: 9de500b5ea6b34441b0ddda838c5ea84, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -948,6 +996,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 02_Market_Barrel_WithCrane
       objectReference: {fileID: 0}
+    - target: {fileID: 6751438630518970987, guid: dfa6b47b89aa97c4fb50a2f4bf0f00d2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -996,9 +1048,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3694396520422276086}
     m_Modifications:
+    - target: {fileID: 1566928356092624241, guid: 69eee11787343a143ad850f77705bb4d, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6100661606840703247, guid: 69eee11787343a143ad850f77705bb4d, type: 3}
       propertyPath: m_Name
       value: 02_Market_Barrel_Single_Open
+      objectReference: {fileID: 0}
+    - target: {fileID: 6100661606840703247, guid: 69eee11787343a143ad850f77705bb4d, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6909146094235206581, guid: 69eee11787343a143ad850f77705bb4d, type: 3}
       propertyPath: m_RootOrder
@@ -1166,9 +1226,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5182919049073974607, guid: 2d1b39d101c03f844aa80059c86e7200, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 529783828677035687, guid: 2d1b39d101c03f844aa80059c86e7200, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 875330301433346464, guid: 2d1b39d101c03f844aa80059c86e7200, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2d1b39d101c03f844aa80059c86e7200, type: 3}
       propertyPath: m_Name
       value: 01_House_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2d1b39d101c03f844aa80059c86e7200, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1356,6 +1432,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 07_Tavern_UmbrelaTable_1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d725f4d99a81de54992fb075b2b6bdf4, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1407,6 +1487,10 @@ PrefabInstance:
     - target: {fileID: 7418710947893641362, guid: ee3e1c46b473f744bb23691f03d6d290, type: 3}
       propertyPath: m_Name
       value: 02_Market_Crate_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7418710947893641362, guid: ee3e1c46b473f744bb23691f03d6d290, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7908143793532099112, guid: ee3e1c46b473f744bb23691f03d6d290, type: 3}
       propertyPath: m_RootOrder
@@ -1548,6 +1632,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 07_Tavern_Banner
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 72145ee31c13a2b48ade686eaeb75584, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1644,6 +1732,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 02_Market_Sack_Single
       objectReference: {fileID: 0}
+    - target: {fileID: 2144366300923298632, guid: cc04b2232a65eaf48a0dbca0b5a67c65, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1695,6 +1787,10 @@ PrefabInstance:
     - target: {fileID: 4010640454024830603, guid: ff4f86447611312488abf22d86ee07a5, type: 3}
       propertyPath: m_Name
       value: 02_Market_Sack_Stack
+      objectReference: {fileID: 0}
+    - target: {fileID: 4010640454024830603, guid: ff4f86447611312488abf22d86ee07a5, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4387483033759269937, guid: ff4f86447611312488abf22d86ee07a5, type: 3}
       propertyPath: m_RootOrder
@@ -1835,6 +1931,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 93a4a2b4586aee74b9d9943c0e58fa36, type: 3}
       propertyPath: m_Name
       value: 07_Tavern_UmbrelaTable_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 93a4a2b4586aee74b9d9943c0e58fa36, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

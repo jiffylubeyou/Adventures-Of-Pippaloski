@@ -17,6 +17,8 @@ public class RaftController : MonoBehaviour
     [Header("Water")]
     [Tooltip("World Y the raft floats at. Match your water plane height.")]
     [SerializeField] private float waterLevel = 0f;
+    [Tooltip("Vertical offset added to waterLevel when snapping the hull. The hull pivot is forced to (waterLevel + hullYOffset) every frame. A flat raft uses 0; a boat whose pivot sits below the hull needs a NEGATIVE value to sink it into the water instead of floating on top.")]
+    [SerializeField] private float hullYOffset = 0f;
 
     [Header("Land Collision")]
     [Tooltip("Half-extents of the collision box swept ahead of the raft. X = half-width, Y = half-height (make tall to catch any island height), Z = half depth of the probe box.")]
@@ -48,6 +50,8 @@ public class RaftController : MonoBehaviour
     public static RaftController Instance { get; private set; }
     public bool PlayerAboard => playerAboard;
     public float WaterLevel  => waterLevel;
+    // The Y the hull pivot is actually held at (water surface + hull offset).
+    public float FloatY      => waterLevel + hullYOffset;
 
     // Set by RaftHealth while the raft is sinking — freezes driving and the
     // water-surface snap so the sink animation can move the raft freely.
@@ -113,7 +117,7 @@ public class RaftController : MonoBehaviour
 
         // Keep raft on water surface
         var pos = transform.position;
-        pos.y = waterLevel;
+        pos.y = waterLevel + hullYOffset;
         transform.position = pos;
     }
 

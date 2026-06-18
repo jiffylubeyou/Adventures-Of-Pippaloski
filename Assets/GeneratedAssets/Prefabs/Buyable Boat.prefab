@@ -384,7 +384,7 @@ Transform:
   - {fileID: 3383343517900950522}
   - {fileID: 166587398482245651}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -95.99, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5709780462234365168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,13 +397,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0cc118f9a8c6ea4fa33d6b58e7ed23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaftController
-  boardRange: 3
+  boardRange: 6
   seatOffset: {x: 0, y: 1.2, z: 0}
   raftCamDistance: 22
   raftCamHeight: 6
-  raftSpeed: 5
+  raftSpeed: 50
   raftTurnSpeed: 90
   waterLevel: 4
+  hullYOffset: -5
   hullHalfExtents: {x: 1.5, y: 8, z: 0.6}
   probeDistance: 0.5
   groundLayer:

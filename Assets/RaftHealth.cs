@@ -124,7 +124,7 @@ public class RaftHealth : MonoBehaviour
         }
         history.Clear();
 
-        targetPos.y = controller.WaterLevel;
+        targetPos.y = controller.FloatY;
         transform.SetPositionAndRotation(targetPos, targetRot);
 
         health = maxHealth;

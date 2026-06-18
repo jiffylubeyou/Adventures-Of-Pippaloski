@@ -78,6 +78,17 @@ public static class SetupBuyableBoat
 
         int colliders = AddMeshColliders(instance);
 
+        // Measure the hull so we can sit the boat IN the water and size the
+        // boarding range to the boat, not a small flat raft.
+        Bounds bounds = MeasureBounds(instance);   // relative to the root at origin
+        float  height = bounds.size.y;
+        // Force the keel ~20% of the hull height below the surface, whatever the
+        // model's pivot happens to be, so it floats believably instead of on top.
+        float  hullYOffset = -bounds.min.y - 0.2f * height;
+        // Reach from the centre pivot out past the hull so the prompt appears when
+        // the player walks up to the side/bow.
+        float  boardRange  = Mathf.Max(6f, bounds.extents.magnitude + 2f);
+
         // RaftController — gated behind the shop-purchase flag
         var raft = instance.GetComponent<RaftController>() ?? instance.AddComponent<RaftController>();
         var rso = new SerializedObject(raft);
@@ -85,6 +96,8 @@ public static class SetupBuyableBoat
         SetString(rso, "boardPrompt",   "Press E to ride the boat");
         SetString(rso, "lockedMessage", "Buy this boat from Lil Zoinks first!");
         SetFloat (rso, "waterLevel",    4f);                 // project water height
+        SetFloat (rso, "hullYOffset",   hullYOffset);        // sink it into the water
+        SetFloat (rso, "boardRange",    boardRange);
         SetInt   (rso, "groundLayer",   1 << IslandLayer);   // Island layer mask
         rso.ApplyModifiedPropertiesWithoutUndo();
 
@@ -96,8 +109,19 @@ public static class SetupBuyableBoat
         Object.DestroyImmediate(instance);
 
         return ok
-            ? $"Created {OutputBoatPath}\n  • {colliders} MeshCollider(s), RaftController (flag '{OwnedFlag}'), RaftHealth"
+            ? $"Created {OutputBoatPath}\n  • {colliders} MeshCollider(s), RaftController (flag '{OwnedFlag}'), RaftHealth\n  • auto hullYOffset {hullYOffset:0.00}, boardRange {boardRange:0.0}"
             : "ERROR: failed to save " + OutputBoatPath;
+    }
+
+    // Combined renderer bounds with the boat at the origin (identity rotation),
+    // so min/center/extents are measured relative to the prefab root pivot.
+    private static Bounds MeasureBounds(GameObject root)
+    {
+        var rends = root.GetComponentsInChildren<Renderer>();
+        if (rends.Length == 0) return new Bounds(Vector3.zero, Vector3.one);
+        Bounds b = rends[0].bounds;
+        foreach (var r in rends) b.Encapsulate(r.bounds);
+        return b;
     }
 
     // Mirrors AddMeshCollidersToChildren: one MeshCollider per uncovered MeshFilter.

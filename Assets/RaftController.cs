@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public class RaftController : MonoBehaviour
     [SerializeField] private Vector3 seatOffset = new Vector3(0f, 1.2f, 0f);
     [SerializeField] private float raftCamDistance = 22f;
     [SerializeField] private float raftCamHeight   = 6f;
+    [Tooltip("Hide the rider's renderers while they're aboard (for enclosed boats where the character shouldn't be seen). They reappear on disembark.")]
+    [SerializeField] private bool hideRiderWhileAboard = false;
 
     [Header("Raft Movement")]
     [SerializeField] private float raftSpeed     = 5f;
@@ -41,6 +44,10 @@ public class RaftController : MonoBehaviour
     private Transform playerTransform;
 
     private bool playerAboard = false;
+
+    // Renderers we switched off on boarding, so we re-enable exactly those
+    // (and not ones that were already disabled) on disembark.
+    private readonly List<Renderer> hiddenRenderers = new List<Renderer>();
 
     // Prompt UI
     private Text promptText;
@@ -176,12 +183,38 @@ public class RaftController : MonoBehaviour
         playerTransform.SetParent(transform);
         playerTransform.localPosition = seatOffset;
         playerTransform.localRotation = Quaternion.identity;
+
+        if (hideRiderWhileAboard) SetRiderHidden(true);
+    }
+
+    // Toggle the rider's visibility without disabling the player object, so the
+    // controller and camera-follow keep running while aboard.
+    private void SetRiderHidden(bool hidden)
+    {
+        if (hidden)
+        {
+            hiddenRenderers.Clear();
+            foreach (var r in playerTransform.GetComponentsInChildren<Renderer>(true))
+            {
+                if (!r.enabled) continue;     // leave already-hidden renderers alone
+                r.enabled = false;
+                hiddenRenderers.Add(r);
+            }
+        }
+        else
+        {
+            foreach (var r in hiddenRenderers)
+                if (r != null) r.enabled = true;
+            hiddenRenderers.Clear();
+        }
     }
 
     private void Disembark()
     {
         playerAboard = false;
         if (Instance == this) Instance = null;
+
+        SetRiderHidden(false);   // re-show the rider (no-op if they were never hidden)
 
         playerTransform.SetParent(null);
 

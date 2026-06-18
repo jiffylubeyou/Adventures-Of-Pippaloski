@@ -2070,8 +2070,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SenseiShop
   shopTitle: "Lil Zoinks' Boat Shop\u2122"
   items:
-  - itemName: Speedboat
-    description: A sleek motorboat. Faster than that flimsy raft.
+  - itemName: Chug Boat
+    description: A trusty chug boat. Sturdier than that flimsy raft.
     price: 250
     grantsFlag: boat_speedboat_owned
     oneTimePurchase: 1

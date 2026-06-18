@@ -30,7 +30,7 @@ public static class SetupBuyableBoat
     private const string BoatModelPath =
         "Assets/Low-Poly 3D Boat Model/Prefab/boat Prefab.prefab";
     private const string OutputBoatPath =
-        "Assets/GeneratedAssets/Prefabs/Buyable Boat.prefab";
+        "Assets/GeneratedAssets/Prefabs/Chug Boat.prefab";
     private const string LilZoinksPath =
         "Assets/GeneratedAssets/Prefabs/Lil Zoinks.prefab";
 
@@ -72,7 +72,7 @@ public static class SetupBuyableBoat
         // re-inherits (and could lose) our added components.
         PrefabUtility.UnpackPrefabInstance(instance, PrefabUnpackMode.Completely,
             InteractionMode.AutomatedAction);
-        instance.name = "Buyable Boat";
+        instance.name = "Chug Boat";
         instance.transform.position = Vector3.zero;
         instance.transform.rotation = Quaternion.identity;
 
@@ -93,12 +93,13 @@ public static class SetupBuyableBoat
         var raft = instance.GetComponent<RaftController>() ?? instance.AddComponent<RaftController>();
         var rso = new SerializedObject(raft);
         SetString(rso, "requireFlag",   OwnedFlag);
-        SetString(rso, "boardPrompt",   "Press E to ride the boat");
+        SetString(rso, "boardPrompt",   "Press E to ride the Chug Boat");
         SetString(rso, "lockedMessage", "Buy this boat from Lil Zoinks first!");
         SetFloat (rso, "waterLevel",    4f);                 // project water height
         SetFloat (rso, "hullYOffset",   hullYOffset);        // sink it into the water
         SetFloat (rso, "boardRange",    boardRange);
         SetInt   (rso, "groundLayer",   1 << IslandLayer);   // Island layer mask
+        SetBool  (rso, "hideRiderWhileAboard", true);        // hide the rider while driving
         rso.ApplyModifiedPropertiesWithoutUndo();
 
         // RaftHealth — lets pirates damage/sink it like the raft
@@ -165,9 +166,9 @@ public static class SetupBuyableBoat
             {
                 items.arraySize += 1;
                 var item = items.GetArrayElementAtIndex(items.arraySize - 1);
-                item.FindPropertyRelative("itemName").stringValue        = "Speedboat";
+                item.FindPropertyRelative("itemName").stringValue        = "Chug Boat";
                 item.FindPropertyRelative("description").stringValue     =
-                    "A sleek motorboat. Faster than that flimsy raft.";
+                    "A trusty chug boat. Sturdier than that flimsy raft.";
                 item.FindPropertyRelative("price").intValue              = BoatPrice;
                 item.FindPropertyRelative("grantsFlag").stringValue      = OwnedFlag;
                 item.FindPropertyRelative("oneTimePurchase").boolValue   = true;
@@ -226,5 +227,10 @@ public static class SetupBuyableBoat
     {
         var p = so.FindProperty(name);
         if (p != null) p.intValue = value;
+    }
+    private static void SetBool(SerializedObject so, string name, bool value)
+    {
+        var p = so.FindProperty(name);
+        if (p != null) p.boolValue = value;
     }
 }

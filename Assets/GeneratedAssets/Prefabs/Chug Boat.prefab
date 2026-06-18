@@ -397,13 +397,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0cc118f9a8c6ea4fa33d6b58e7ed23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaftController
-  boardRange: 6
-  seatOffset: {x: 0, y: 1.2, z: 0}
+  boardRange: 8
+  seatOffset: {x: 0, y: 0, z: 0}
   raftCamDistance: 22
   raftCamHeight: 6
   hideRiderWhileAboard: 1
+  disembarkOffset: {x: 0, y: 8, z: 0}
   raftSpeed: 50
   raftTurnSpeed: 90
+  canSprint: 1
+  sprintMultiplier: 2
   waterLevel: 4
   hullYOffset: -5
   hullHalfExtents: {x: 1.5, y: 8, z: 0.6}
@@ -411,8 +414,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  requireFlag: boat_speedboat_owned
-  boardPrompt: Press E to ride the boat
+  requireFlag: boat_chugboat_owned
+  boardPrompt: Press E to ride the Chug Boat
   lockedMessage: Buy this boat from Lil Zoinks first!
   ControlsLocked: 0
 --- !u!114 &2349799407809484645

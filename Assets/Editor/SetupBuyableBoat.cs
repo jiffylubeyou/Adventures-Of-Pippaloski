@@ -88,6 +88,8 @@ public static class SetupBuyableBoat
         // Reach from the centre pivot out past the hull so the prompt appears when
         // the player walks up to the side/bow.
         float  boardRange  = Mathf.Max(6f, bounds.extents.magnitude + 2f);
+        // Drop the rider off the side and above the deck so they clear the hull.
+        Vector3 disembarkOffset = new Vector3(bounds.extents.x + 1.5f, bounds.max.y + 1f, 0f);
 
         // RaftController — gated behind the shop-purchase flag
         var raft = instance.GetComponent<RaftController>() ?? instance.AddComponent<RaftController>();
@@ -100,6 +102,8 @@ public static class SetupBuyableBoat
         SetFloat (rso, "boardRange",    boardRange);
         SetInt   (rso, "groundLayer",   1 << IslandLayer);   // Island layer mask
         SetBool  (rso, "hideRiderWhileAboard", true);        // hide the rider while driving
+        SetBool  (rso, "canSprint",     true);               // hold Shift for a speed boost
+        SetVector3(rso, "disembarkOffset", disembarkOffset); // get off above/beside the hull
         rso.ApplyModifiedPropertiesWithoutUndo();
 
         // RaftHealth — lets pirates damage/sink it like the raft
@@ -232,5 +236,10 @@ public static class SetupBuyableBoat
     {
         var p = so.FindProperty(name);
         if (p != null) p.boolValue = value;
+    }
+    private static void SetVector3(SerializedObject so, string name, Vector3 value)
+    {
+        var p = so.FindProperty(name);
+        if (p != null) p.vector3Value = value;
     }
 }

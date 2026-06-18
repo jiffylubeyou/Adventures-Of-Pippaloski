@@ -13497,10 +13497,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chug Boat
       objectReference: {fileID: 0}
-    - target: {fileID: 5709780462234365168, guid: 95a2bac6d4bfb3d4da4bfe30acfaa1ed, type: 3}
-      propertyPath: requireFlag
-      value: boat_chugboat_owned
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -85109,15 +85105,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 254537112094566830, guid: e59d9fb3bc4d9104c801e19162613f1a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 499.18
+      value: 494.52374
       objectReference: {fileID: 0}
     - target: {fileID: 254537112094566830, guid: e59d9fb3bc4d9104c801e19162613f1a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.064631
+      value: 1.4805429
       objectReference: {fileID: 0}
     - target: {fileID: 254537112094566830, guid: e59d9fb3bc4d9104c801e19162613f1a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -572.22
+      value: -561.5093
       objectReference: {fileID: 0}
     - target: {fileID: 254537112094566830, guid: e59d9fb3bc4d9104c801e19162613f1a, type: 3}
       propertyPath: m_LocalRotation.w

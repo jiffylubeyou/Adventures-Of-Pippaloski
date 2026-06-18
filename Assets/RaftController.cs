@@ -12,10 +12,16 @@ public class RaftController : MonoBehaviour
     [SerializeField] private float raftCamHeight   = 6f;
     [Tooltip("Hide the rider's renderers while they're aboard (for enclosed boats where the character shouldn't be seen). They reappear on disembark.")]
     [SerializeField] private bool hideRiderWhileAboard = false;
+    [Tooltip("Where the rider is dropped when getting off, relative to the boat: X = sideways (local right), Y = up (world), Z = forward (local). Raise Y on tall boats so the rider clears the hull instead of getting stuck inside.")]
+    [SerializeField] private Vector3 disembarkOffset = new Vector3(2f, 0.5f, 0f);
 
     [Header("Raft Movement")]
     [SerializeField] private float raftSpeed     = 5f;
     [SerializeField] private float raftTurnSpeed = 90f;  // degrees per second
+    [Tooltip("Allow a hold-Shift speed boost on this boat (like the character's sprint). Some boats have it, some don't.")]
+    [SerializeField] private bool  canSprint        = false;
+    [Tooltip("Speed multiplier applied while sprinting (Shift held).")]
+    [SerializeField] private float sprintMultiplier = 2f;
 
     [Header("Water")]
     [Tooltip("World Y the raft floats at. Match your water plane height.")]
@@ -137,7 +143,8 @@ public class RaftController : MonoBehaviour
 
         if (Mathf.Abs(input.y) > 0.01f)
         {
-            float   stepDist  = raftSpeed * Time.deltaTime;
+            float   speed     = (canSprint && GetSprintHeld()) ? raftSpeed * sprintMultiplier : raftSpeed;
+            float   stepDist  = speed * Time.deltaTime;
             Vector3 moveDir   = transform.forward * Mathf.Sign(input.y);
 
             if (!IsLandAhead(moveDir, stepDist))
@@ -218,8 +225,12 @@ public class RaftController : MonoBehaviour
 
         playerTransform.SetParent(null);
 
-        // Put player just off the side of the raft so they don't immediately re-trigger boarding
-        playerTransform.position = transform.position + transform.right * 2f + Vector3.up * 0.5f;
+        // Put player just off the boat (and above the hull) so they don't get
+        // stuck inside it or immediately re-trigger boarding.
+        playerTransform.position = transform.position
+            + transform.right   * disembarkOffset.x
+            + Vector3.up        * disembarkOffset.y
+            + transform.forward * disembarkOffset.z;
 
         playerCharacterController.enabled = true;
 
@@ -245,6 +256,18 @@ public class RaftController : MonoBehaviour
         return Vector2.ClampMagnitude(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")), 1f);
 #else
         return Vector2.zero;
+#endif
+    }
+
+    private static bool GetSprintHeld()
+    {
+#if ENABLE_INPUT_SYSTEM
+        return UnityEngine.InputSystem.Keyboard.current != null
+            && UnityEngine.InputSystem.Keyboard.current.leftShiftKey.isPressed;
+#elif ENABLE_LEGACY_INPUT_MANAGER
+        return Input.GetKey(KeyCode.LeftShift);
+#else
+        return false;
 #endif
     }
 

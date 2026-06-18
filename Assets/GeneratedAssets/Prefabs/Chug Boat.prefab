@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 5709780462234365168}
   - component: {fileID: 2349799407809484645}
   m_Layer: 0
-  m_Name: Buyable Boat
+  m_Name: Chug Boat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

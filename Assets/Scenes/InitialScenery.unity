@@ -13495,7 +13495,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2877367232097736166, guid: 95a2bac6d4bfb3d4da4bfe30acfaa1ed, type: 3}
       propertyPath: m_Name
-      value: Buyable Boat
+      value: Chug Boat
+      objectReference: {fileID: 0}
+    - target: {fileID: 5709780462234365168, guid: 95a2bac6d4bfb3d4da4bfe30acfaa1ed, type: 3}
+      propertyPath: requireFlag
+      value: boat_chugboat_owned
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -78313,6 +78317,10 @@ PrefabInstance:
     - target: {fileID: 3694396520422276086, guid: ff01d296c34847f4e8e316a54fe7a91f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051821367779041995, guid: ff01d296c34847f4e8e316a54fe7a91f, type: 3}
+      propertyPath: items.Array.data[0].grantsFlag
+      value: boat_chugboat_owned
       objectReference: {fileID: 0}
     - target: {fileID: 7549608994229485954, guid: ff01d296c34847f4e8e316a54fe7a91f, type: 3}
       propertyPath: m_Name

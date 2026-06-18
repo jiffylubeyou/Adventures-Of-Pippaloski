@@ -26,6 +26,14 @@ public class RaftController : MonoBehaviour
     [Tooltip("Layer mask containing the island / terrain. Set this to the 'Island' layer after running Tools > Pippaloski > Setup Island Layer.")]
     [SerializeField] private LayerMask groundLayer = ~0;  // default: everything
 
+    [Header("Unlock")]
+    [Tooltip("GameState flag required before the player can board. Leave empty to make the boat always rideable. The raft uses 'quest_complete'; buyable boats use their shop-grant flag (e.g. 'boat_speedboat_owned').")]
+    [SerializeField] private string requireFlag = GameState.QuestComplete;
+    [Tooltip("On-screen prompt shown when the player is in range.")]
+    [SerializeField] private string boardPrompt = "Press E to ride the raft";
+    [Tooltip("Message flashed when the player tries to board without the required flag.")]
+    [SerializeField] private string lockedMessage = "You don't have the keys!";
+
     private PlayerDogController playerController;
     private CharacterController playerCharacterController;
     private Transform playerTransform;
@@ -44,11 +52,6 @@ public class RaftController : MonoBehaviour
     // Set by RaftHealth while the raft is sinking — freezes driving and the
     // water-surface snap so the sink animation can move the raft freely.
     [HideInInspector] public bool ControlsLocked = false;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     private void OnDestroy()
     {
@@ -89,7 +92,7 @@ public class RaftController : MonoBehaviour
 
             if (inRange && GetInteractPressed())
             {
-                if (GameState.HasFlag(GameState.QuestComplete))
+                if (string.IsNullOrEmpty(requireFlag) || GameState.HasFlag(requireFlag))
                     Board();
                 else
                     StartCoroutine(ShowNoKeysMessage());
@@ -156,6 +159,7 @@ public class RaftController : MonoBehaviour
     private void Board()
     {
         playerAboard = true;
+        Instance = this;  // pirates target whichever boat is currently ridden
 
         playerController.MotorEnabled       = false;
         playerController.SuppressDrown      = true;
@@ -173,6 +177,7 @@ public class RaftController : MonoBehaviour
     private void Disembark()
     {
         playerAboard = false;
+        if (Instance == this) Instance = null;
 
         playerTransform.SetParent(null);
 
@@ -256,7 +261,7 @@ public class RaftController : MonoBehaviour
 
     // ---------- UI ----------
 
-    private static Text CreatePromptUI()
+    private Text CreatePromptUI()
     {
         var canvas = new GameObject("Raft Prompt Canvas").AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -275,7 +280,7 @@ public class RaftController : MonoBehaviour
         rect.anchoredPosition = new Vector2(0f, 60f);
 
         var text = textObj.AddComponent<Text>();
-        text.text      = "Press E to ride the raft";
+        text.text      = boardPrompt;
         text.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         text.fontSize  = 28;
         text.fontStyle = FontStyle.Bold;
@@ -290,7 +295,7 @@ public class RaftController : MonoBehaviour
         return text;
     }
 
-    private static Text CreateNoKeysUI()
+    private Text CreateNoKeysUI()
     {
         var canvas = new GameObject("Raft No Keys Canvas").AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -310,7 +315,7 @@ public class RaftController : MonoBehaviour
         rect.anchoredPosition = new Vector2(0f, 150f);
 
         var text = textObj.AddComponent<Text>();
-        text.text      = "You don't have the keys!";
+        text.text      = lockedMessage;
         text.font      = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         text.fontSize  = 28;
         text.fontStyle = FontStyle.Bold;

@@ -78,20 +78,9 @@ public class PirateShipAI : MonoBehaviour
         PickNewWaypoint();
     }
 
-    private void Start()
-    {
-        raftCtrl = RaftController.Instance;
-        if (raftCtrl == null)
-            raftCtrl = FindFirstObjectByType<RaftController>();
-        if (raftCtrl != null)
-        {
-            raftHealth  = raftCtrl.GetComponent<RaftHealth>();
-            lastRaftPos = raftCtrl.transform.position;
-        }
-    }
-
     private void Update()
     {
+        RefreshTarget();
         TrackRaftVelocity();
 
         bool aggro = IsAggro(out Vector3 toRaftFlat, out float raftDist);
@@ -168,6 +157,19 @@ public class PirateShipAI : MonoBehaviour
 
         toRaftFlat = delta / raftDist;
         return true;
+    }
+
+    // RaftController.Instance is the boat the player is currently aboard (null
+    // while on foot). Re-read it every frame so pirates chase whichever boat —
+    // raft or a bought boat — the player switches to.
+    private void RefreshTarget()
+    {
+        var current = RaftController.Instance;
+        if (current == raftCtrl) return;
+
+        raftCtrl    = current;
+        raftHealth  = current != null ? current.GetComponent<RaftHealth>() : null;
+        if (current != null) lastRaftPos = current.transform.position;  // avoid a velocity spike on switch
     }
 
     private void TrackRaftVelocity()

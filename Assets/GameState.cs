@@ -12,6 +12,10 @@ public static class GameState
     public const string QuestComplete = "quest_complete";
     public const string ShopUnlocked  = "shop_unlocked";
 
+    // Boats bought from Lil Zoinks' shop. Each buyable boat's RaftController
+    // gates boarding behind one of these flags (set by a SenseiShop purchase).
+    public const string SpeedboatOwned = "boat_speedboat_owned";
+
     // ---- Coins ----
     public static int Coins { get; private set; } = 0;
 

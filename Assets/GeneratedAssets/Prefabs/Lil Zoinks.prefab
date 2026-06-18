@@ -1946,6 +1946,7 @@ GameObject:
   - component: {fileID: 3744228948832888041}
   - component: {fileID: 6202607739320892109}
   - component: {fileID: 5033031296182993778}
+  - component: {fileID: 3677338194752343966}
   m_Layer: 0
   m_Name: Lil Zoinks
   m_TagString: Untagged
@@ -2025,7 +2026,7 @@ MonoBehaviour:
     followUpLines: []
   - playerPrompt: I want to buy a boat
     npcResponse: Well get ready to pay through the nose buddy
-    closesDialogue: 1
+    closesDialogue: 0
     oneTimeOnly: 0
     startsLocked: 0
     unlocksLineIndices: 
@@ -2035,7 +2036,7 @@ MonoBehaviour:
     clearsFlags: []
     setsFlags: []
     grantsBoatAccess: 0
-    opensShop: 0
+    opensShop: 1
     startsWitchLunchQuest: 0
     opensTravelMenu: 0
     followUpLines: []
@@ -2055,6 +2056,26 @@ MonoBehaviour:
     startsWitchLunchQuest: 0
     opensTravelMenu: 0
     followUpLines: []
+--- !u!114 &3677338194752343966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094710804264531139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40ef19274e57c3d4f81a10c578ef42c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SenseiShop
+  shopTitle: "Lil Zoinks' Boat Shop\u2122"
+  items:
+  - itemName: Speedboat
+    description: A sleek motorboat. Faster than that flimsy raft.
+    price: 250
+    grantsFlag: boat_speedboat_owned
+    oneTimePurchase: 1
+    purchased: 0
 --- !u!1 &6462667468852785979
 GameObject:
   m_ObjectHideFlags: 0

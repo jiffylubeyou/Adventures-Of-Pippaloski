@@ -14,7 +14,8 @@ public static class GameState
 
     // Boats bought from Lil Zoinks' shop. Each buyable boat's RaftController
     // gates boarding behind one of these flags (set by a SenseiShop purchase).
-    public const string SpeedboatOwned = "boat_speedboat_owned";
+    public const string SpeedboatOwned = "boat_speedboat_owned";   // Chug Boat
+    public const string GalleonOwned   = "boat_galleon_owned";
 
     // ---- Coins ----
     public static int Coins { get; private set; } = 0;

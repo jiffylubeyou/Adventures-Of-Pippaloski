@@ -1,135 +1,153 @@
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Wires up the "buyable boat" feature in one shot:
+/// Builds the buyable boats and wires Lil Zoinks' shop to sell them.
 ///
-///   1. Builds a configured boat prefab at
-///      Assets/GeneratedAssets/Prefabs/Buyable Boat.prefab from the
-///      Low-Poly 3D Boat model — adds MeshColliders to its parts (so
-///      cannonballs hit it and the player can't walk through it), a
-///      RaftController gated behind the "boat_speedboat_owned" flag, and a
-///      RaftHealth so pirates can sink it like the raft.
+/// Each boat in the Boats table below gets a configured prefab under
+/// Assets/GeneratedAssets/Prefabs/ — the source model + MeshColliders + a
+/// RaftController carrying the shared "buyable boat" profile (Shift-sprint,
+/// hide-rider, speed/turn, Island land mask, gated behind its own owned-flag)
+/// + a RaftHealth so pirates can sink it. The boat's geometry fields
+/// (hullYOffset / boardRange / disembarkOffset) are auto-computed from its
+/// bounds as STARTING POINTS — tune them in the inspector afterward.
 ///
-///   2. Turns Lil Zoinks into a boat seller — adds a SenseiShop selling the
-///      Speedboat for 250 coins (granting that flag) and flips his
-///      "I want to buy a boat" dialogue line to open the shop.
+/// Then Lil Zoinks gets a SenseiShop with one item per boat (granting that
+/// boat's flag) and his "I want to buy a boat" line is set to open the shop.
 ///
-/// After running, drag Buyable Boat.prefab onto the water where you want it and
-/// fine-tune its seatOffset / hullHalfExtents in the inspector (the green/red
-/// gizmo box shows the land-collision probe).
-///
-/// Run via Tools > Pippaloski > Setup Buyable Boat. Safe to run multiple times.
-///
-/// To add MORE boats later: duplicate Buyable Boat.prefab, swap the model, give
-/// its RaftController a new requireFlag + messages, and add a matching SenseiShop
-/// item whose grantsFlag is that flag. No code changes needed.
+/// Run via Tools > Pippaloski > Setup Buyable Boats. Safe to run repeatedly:
+/// a boat prefab that already exists is LEFT ALONE (so hand-tuning survives),
+/// and shop items are only added if missing. To add a new boat, add a row to
+/// the Boats table and a flag to GameState — no other code changes.
 /// </summary>
 public static class SetupBuyableBoat
 {
-    private const string BoatModelPath =
-        "Assets/Low-Poly 3D Boat Model/Prefab/boat Prefab.prefab";
-    private const string OutputBoatPath =
-        "Assets/GeneratedAssets/Prefabs/Chug Boat.prefab";
     private const string LilZoinksPath =
         "Assets/GeneratedAssets/Prefabs/Lil Zoinks.prefab";
+    private const int IslandLayer = 8;
 
-    // Runtime GameState lives in Assembly-CSharp, which editor scripts reference,
-    // so we use its constant directly — boat flag and shop grant can't drift apart.
-    private const string OwnedFlag   = GameState.SpeedboatOwned;
-    private const int    BoatPrice   = 250;
-    private const int    IslandLayer = 8;
+    private struct BoatDef
+    {
+        public string modelPath;     // source art prefab
+        public string outputPath;    // configured prefab we generate
+        public string displayName;   // name in-game / in the shop
+        public string ownedFlag;     // GameState flag granted on purchase + required to board
+        public int    price;
+        public string description;   // shop blurb
+    }
 
-    [MenuItem("Tools/Pippaloski/Setup Buyable Boat")]
+    // Add a row here (plus a GameState flag) to introduce another buyable boat.
+    private static readonly BoatDef[] Boats =
+    {
+        new BoatDef
+        {
+            modelPath   = "Assets/Low-Poly 3D Boat Model/Prefab/boat Prefab.prefab",
+            outputPath  = "Assets/GeneratedAssets/Prefabs/Chug Boat.prefab",
+            displayName = "Chug Boat",
+            ownedFlag   = GameState.SpeedboatOwned,
+            price       = 250,
+            description = "A trusty chug boat. Sturdier than that flimsy raft.",
+        },
+        new BoatDef
+        {
+            modelPath   = "Assets/MedievalShip/Prefabs/Galleon.prefab",
+            outputPath  = "Assets/GeneratedAssets/Prefabs/Galleon.prefab",
+            displayName = "Galleon",
+            ownedFlag   = GameState.GalleonOwned,
+            price       = 250,
+            description = "A mighty medieval galleon. The pride of the fleet.",
+        },
+    };
+
+    [MenuItem("Tools/Pippaloski/Setup Buyable Boats")]
     public static void Setup()
     {
-        string boatResult = BuildBoatPrefab();
-        string shopResult = WireLilZoinksShop();
+        var sb = new StringBuilder();
+
+        sb.AppendLine("BOATS:");
+        foreach (var def in Boats)
+            sb.AppendLine("  • " + BuildBoatPrefab(def));
+
+        sb.AppendLine();
+        sb.AppendLine("SHOP:");
+        sb.AppendLine(WireLilZoinksShop());
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
-        EditorUtility.DisplayDialog("Setup Buyable Boat",
-            "Done!\n\n" +
-            "BOAT PREFAB:\n" + boatResult + "\n\n" +
-            "LIL ZOINKS SHOP:\n" + shopResult + "\n\n" +
-            "Next: drag 'Buyable Boat.prefab' onto the water and tune its " +
-            "seatOffset / hullHalfExtents in the inspector.",
+        EditorUtility.DisplayDialog("Setup Buyable Boats",
+            sb.ToString() +
+            "\nNewly created boats: drag them onto the water and tune " +
+            "seatOffset / hullYOffset / disembarkOffset in the inspector.",
             "OK");
     }
 
-    // ── 1. Build the configured boat prefab ───────────────────────────────────
+    // ── Build one configured boat prefab ──────────────────────────────────────
 
-    private static string BuildBoatPrefab()
+    private static string BuildBoatPrefab(BoatDef def)
     {
-        var source = AssetDatabase.LoadAssetAtPath<GameObject>(BoatModelPath);
-        if (source == null)
-            return "ERROR: boat model not found at " + BoatModelPath;
+        // Never clobber a boat that already exists — it may be hand-tuned.
+        if (AssetDatabase.LoadAssetAtPath<GameObject>(def.outputPath) != null)
+            return $"{def.displayName}: already exists, left as-is";
 
-        // Work on a temporary scene instance, then save it as a brand-new prefab.
+        var source = AssetDatabase.LoadAssetAtPath<GameObject>(def.modelPath);
+        if (source == null)
+            return $"{def.displayName}: ERROR — model not found at {def.modelPath}";
+
         var instance = (GameObject)PrefabUtility.InstantiatePrefab(source);
-        // Unpack so the saved asset is a self-contained prefab, not a variant that
-        // re-inherits (and could lose) our added components.
         PrefabUtility.UnpackPrefabInstance(instance, PrefabUnpackMode.Completely,
             InteractionMode.AutomatedAction);
-        instance.name = "Chug Boat";
+        instance.name = def.displayName;
         instance.transform.position = Vector3.zero;
         instance.transform.rotation = Quaternion.identity;
 
         int colliders = AddMeshColliders(instance);
 
-        // Measure the hull so we can sit the boat IN the water and size the
-        // boarding range to the boat, not a small flat raft.
-        Bounds bounds = MeasureBounds(instance);   // relative to the root at origin
-        float  height = bounds.size.y;
-        // Force the keel ~20% of the hull height below the surface, whatever the
-        // model's pivot happens to be, so it floats believably instead of on top.
-        float  hullYOffset = -bounds.min.y - 0.2f * height;
-        // Reach from the centre pivot out past the hull so the prompt appears when
-        // the player walks up to the side/bow.
-        float  boardRange  = Mathf.Max(6f, bounds.extents.magnitude + 2f);
-        // Drop the rider off the side and above the deck so they clear the hull.
+        // Auto geometry from the hull bounds (root at origin → relative to pivot).
+        Bounds  bounds = MeasureBounds(instance);
+        float   height = bounds.size.y;
+        float   hullYOffset     = -bounds.min.y - 0.2f * height;          // ~20% submerged
+        float   boardRange      = Mathf.Max(6f, bounds.extents.magnitude + 2f);
         Vector3 disembarkOffset = new Vector3(bounds.extents.x + 1.5f, bounds.max.y + 1f, 0f);
 
-        // RaftController — gated behind the shop-purchase flag
         var raft = instance.GetComponent<RaftController>() ?? instance.AddComponent<RaftController>();
-        var rso = new SerializedObject(raft);
-        SetString(rso, "requireFlag",   OwnedFlag);
-        SetString(rso, "boardPrompt",   "Press E to ride the Chug Boat");
+        var rso  = new SerializedObject(raft);
+
+        // Per-boat identity
+        SetString(rso, "requireFlag",   def.ownedFlag);
+        SetString(rso, "boardPrompt",   "Press E to ride the " + def.displayName);
         SetString(rso, "lockedMessage", "Buy this boat from Lil Zoinks first!");
-        SetFloat (rso, "waterLevel",    4f);                 // project water height
-        SetFloat (rso, "hullYOffset",   hullYOffset);        // sink it into the water
-        SetFloat (rso, "boardRange",    boardRange);
-        SetInt   (rso, "groundLayer",   1 << IslandLayer);   // Island layer mask
-        SetBool  (rso, "hideRiderWhileAboard", true);        // hide the rider while driving
-        SetBool  (rso, "canSprint",     true);               // hold Shift for a speed boost
-        SetVector3(rso, "disembarkOffset", disembarkOffset); // get off above/beside the hull
+
+        // Shared "buyable boat" profile (same values as the Chug Boat)
+        SetFloat (rso, "waterLevel",           4f);
+        SetFloat (rso, "raftSpeed",            50f);
+        SetFloat (rso, "raftTurnSpeed",        90f);
+        SetBool  (rso, "canSprint",            true);
+        SetFloat (rso, "sprintMultiplier",     2f);
+        SetBool  (rso, "hideRiderWhileAboard", true);
+        SetFloat (rso, "raftCamDistance",      22f);
+        SetFloat (rso, "raftCamHeight",        6f);
+        SetInt   (rso, "groundLayer",          1 << IslandLayer);
+
+        // Geometry starting points (tune per boat)
+        SetFloat  (rso, "hullYOffset",     hullYOffset);
+        SetFloat  (rso, "boardRange",      boardRange);
+        SetVector3(rso, "disembarkOffset", disembarkOffset);
+
         rso.ApplyModifiedPropertiesWithoutUndo();
 
-        // RaftHealth — lets pirates damage/sink it like the raft
         if (instance.GetComponent<RaftHealth>() == null)
             instance.AddComponent<RaftHealth>();
 
-        PrefabUtility.SaveAsPrefabAsset(instance, OutputBoatPath, out bool ok);
+        PrefabUtility.SaveAsPrefabAsset(instance, def.outputPath, out bool ok);
         Object.DestroyImmediate(instance);
 
         return ok
-            ? $"Created {OutputBoatPath}\n  • {colliders} MeshCollider(s), RaftController (flag '{OwnedFlag}'), RaftHealth\n  • auto hullYOffset {hullYOffset:0.00}, boardRange {boardRange:0.0}"
-            : "ERROR: failed to save " + OutputBoatPath;
+            ? $"{def.displayName}: created ({colliders} colliders; auto hullYOffset {hullYOffset:0.0}, boardRange {boardRange:0.0})"
+            : $"{def.displayName}: ERROR — failed to save {def.outputPath}";
     }
 
-    // Combined renderer bounds with the boat at the origin (identity rotation),
-    // so min/center/extents are measured relative to the prefab root pivot.
-    private static Bounds MeasureBounds(GameObject root)
-    {
-        var rends = root.GetComponentsInChildren<Renderer>();
-        if (rends.Length == 0) return new Bounds(Vector3.zero, Vector3.one);
-        Bounds b = rends[0].bounds;
-        foreach (var r in rends) b.Encapsulate(r.bounds);
-        return b;
-    }
-
-    // Mirrors AddMeshCollidersToChildren: one MeshCollider per uncovered MeshFilter.
     private static int AddMeshColliders(GameObject root)
     {
         int count = 0;
@@ -144,43 +162,49 @@ public static class SetupBuyableBoat
         return count;
     }
 
-    // ── 2. Wire Lil Zoinks' shop ──────────────────────────────────────────────
+    private static Bounds MeasureBounds(GameObject root)
+    {
+        var rends = root.GetComponentsInChildren<Renderer>();
+        if (rends.Length == 0) return new Bounds(Vector3.zero, Vector3.one);
+        Bounds b = rends[0].bounds;
+        foreach (var r in rends) b.Encapsulate(r.bounds);
+        return b;
+    }
+
+    // ── Wire Lil Zoinks' shop (idempotent) ────────────────────────────────────
 
     private static string WireLilZoinksShop()
     {
         if (AssetDatabase.LoadAssetAtPath<GameObject>(LilZoinksPath) == null)
-            return "ERROR: Lil Zoinks prefab not found at " + LilZoinksPath;
+            return "  ERROR — Lil Zoinks prefab not found at " + LilZoinksPath;
 
-        bool addedShop = false, dialogueFixed = false;
+        int  added = 0;
+        bool dialogueFixed = false;
 
         using (var scope = new PrefabUtility.EditPrefabContentsScope(LilZoinksPath))
         {
             var root = scope.prefabContentsRoot;
 
-            // --- SenseiShop with the Speedboat item ---
-            var shop = root.GetComponent<SenseiShop>();
-            if (shop == null) { shop = root.AddComponent<SenseiShop>(); addedShop = true; }
-
+            var shop = root.GetComponent<SenseiShop>() ?? root.AddComponent<SenseiShop>();
             var shopSO = new SerializedObject(shop);
             SetString(shopSO, "shopTitle", "Lil Zoinks' Boat Shop™");
 
             var items = shopSO.FindProperty("items");
-            int existing = FindShopItemByFlag(items, OwnedFlag);
-            if (existing < 0)
+            foreach (var def in Boats)
             {
+                if (FindShopItemByFlag(items, def.ownedFlag) >= 0) continue;  // already sold
                 items.arraySize += 1;
                 var item = items.GetArrayElementAtIndex(items.arraySize - 1);
-                item.FindPropertyRelative("itemName").stringValue        = "Chug Boat";
-                item.FindPropertyRelative("description").stringValue     =
-                    "A trusty chug boat. Sturdier than that flimsy raft.";
-                item.FindPropertyRelative("price").intValue              = BoatPrice;
-                item.FindPropertyRelative("grantsFlag").stringValue      = OwnedFlag;
-                item.FindPropertyRelative("oneTimePurchase").boolValue   = true;
-                item.FindPropertyRelative("purchased").boolValue         = false;
+                item.FindPropertyRelative("itemName").stringValue      = def.displayName;
+                item.FindPropertyRelative("description").stringValue   = def.description;
+                item.FindPropertyRelative("price").intValue            = def.price;
+                item.FindPropertyRelative("grantsFlag").stringValue    = def.ownedFlag;
+                item.FindPropertyRelative("oneTimePurchase").boolValue = true;
+                item.FindPropertyRelative("purchased").boolValue       = false;
+                added++;
             }
             shopSO.ApplyModifiedPropertiesWithoutUndo();
 
-            // --- DialogueTrigger: make "I want to buy a boat" open the shop ---
             var dlg = root.GetComponent<DialogueTrigger>();
             if (dlg != null)
             {
@@ -201,8 +225,8 @@ public static class SetupBuyableBoat
             }
         }
 
-        return $"  • SenseiShop {(addedShop ? "added" : "already present")} (Speedboat, {BoatPrice} coins)\n" +
-               $"  • 'Buy a boat' line {(dialogueFixed ? "now opens the shop" : "NOT found — set opensShop by hand")}";
+        return $"  • {added} new shop item(s) added\n" +
+               $"  • 'Buy a boat' line {(dialogueFixed ? "opens the shop" : "NOT found — set opensShop by hand")}";
     }
 
     private static int FindShopItemByFlag(SerializedProperty items, string flag)
@@ -219,27 +243,22 @@ public static class SetupBuyableBoat
 
     private static void SetString(SerializedObject so, string name, string value)
     {
-        var p = so.FindProperty(name);
-        if (p != null) p.stringValue = value;
+        var p = so.FindProperty(name); if (p != null) p.stringValue = value;
     }
     private static void SetFloat(SerializedObject so, string name, float value)
     {
-        var p = so.FindProperty(name);
-        if (p != null) p.floatValue = value;
+        var p = so.FindProperty(name); if (p != null) p.floatValue = value;
     }
     private static void SetInt(SerializedObject so, string name, int value)
     {
-        var p = so.FindProperty(name);
-        if (p != null) p.intValue = value;
+        var p = so.FindProperty(name); if (p != null) p.intValue = value;
     }
     private static void SetBool(SerializedObject so, string name, bool value)
     {
-        var p = so.FindProperty(name);
-        if (p != null) p.boolValue = value;
+        var p = so.FindProperty(name); if (p != null) p.boolValue = value;
     }
     private static void SetVector3(SerializedObject so, string name, Vector3 value)
     {
-        var p = so.FindProperty(name);
-        if (p != null) p.vector3Value = value;
+        var p = so.FindProperty(name); if (p != null) p.vector3Value = value;
     }
 }

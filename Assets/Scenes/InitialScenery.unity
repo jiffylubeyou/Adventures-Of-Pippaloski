@@ -15102,6 +15102,63 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 164a97a28b2c12449867f7c551ecf9b6, type: 3}
+--- !u!1001 &405561837
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 520.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -529.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392579169641640085, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7991982485488565711, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
+      propertyPath: m_Name
+      value: Galleon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3f6554357bbe10844ab9850ddde4ab16, type: 3}
 --- !u!1 &406862783 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3856263507474923605, guid: 8a5f7b43b01a23a4491213e215e1cb8c, type: 3}
@@ -85401,3 +85458,4 @@ SceneRoots:
   - {fileID: 1779895553}
   - {fileID: 370688656}
   - {fileID: 3646500526311401070}
+  - {fileID: 405561837}

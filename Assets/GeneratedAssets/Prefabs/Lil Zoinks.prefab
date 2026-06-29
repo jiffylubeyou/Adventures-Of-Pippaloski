@@ -2076,6 +2076,12 @@ MonoBehaviour:
     grantsFlag: boat_speedboat_owned
     oneTimePurchase: 1
     purchased: 0
+  - itemName: Galleon
+    description: A mighty medieval galleon. The pride of the fleet.
+    price: 250
+    grantsFlag: boat_galleon_owned
+    oneTimePurchase: 1
+    purchased: 0
 --- !u!1 &6462667468852785979
 GameObject:
   m_ObjectHideFlags: 0
